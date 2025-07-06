@@ -37,7 +37,7 @@ export const Layout: React.FC = () => {
                 <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary animate-float" />
                 <div className="absolute inset-0 bg-primary/50 blur-xl group-hover:blur-2xl transition-all duration-300" />
               </div>
-              <h1 className="text-base sm:text-xl font-bold gradient-text">習慣デザイン・ラボ</h1>
+              <h1 className="text-base sm:text-xl font-bold text-gray-900 dark:text-gray-100">習慣デザイン・ラボ</h1>
             </Link>
             
             <div className="flex items-center space-x-2 sm:space-x-4">

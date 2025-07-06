@@ -42,7 +42,7 @@ export const DashboardPage: React.FC = () => {
             <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-primary animate-float" />
             <div className="absolute inset-0 bg-primary/50 blur-2xl" />
           </div>
-          <h2 className="text-xl sm:text-3xl font-bold gradient-text">プロジェクト一覧</h2>
+          <h2 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">プロジェクト一覧</h2>
         </div>
         {projects && projects.length > 0 && (
           <div className="glass px-3 py-1.5 rounded-full">

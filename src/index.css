@@ -12,20 +12,20 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     
-    /* グラデーションカラー */
-    --gradient-start: 18 100% 73%;
-    --gradient-middle: 336 85% 70%;
-    --gradient-end: 280 85% 70%;
+    /* グラデーションカラー（青系） */
+    --gradient-start: 210 100% 60%;
+    --gradient-middle: 220 95% 55%;
+    --gradient-end: 240 90% 65%;
     
-    /* メインカラー（サンライズグラデーション） */
-    --primary: 18 100% 73%;
+    /* メインカラー（ブルーグラデーション） */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-gradient: linear-gradient(135deg, hsl(18 100% 73%), hsl(336 85% 70%));
+    --primary-gradient: linear-gradient(135deg, hsl(210 100% 60%), hsl(220 95% 55%));
     
     /* アクセントカラー */
-    --secondary: 174 72% 56%;
+    --secondary: 200 85% 60%;
     --secondary-foreground: 0 0% 100%;
-    --accent: 280 85% 70%;
+    --accent: 240 90% 65%;
     --accent-foreground: 0 0% 100%;
     
     /* その他のカラー */
@@ -35,13 +35,13 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 18 100% 73%;
+    --ring: 217 91% 60%;
     --radius: 0.75rem;
     
     /* 追加カラー */
     --success: 152 70% 52%;
     --warning: 38 92% 50%;
-    --info: 199 89% 48%;
+    --info: 210 100% 60%;
   }
 
   .dark {
