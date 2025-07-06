@@ -34,7 +34,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
     <AnimatedCard delay={delay}>
       <Link
         to={`/projects/${project.id}`}
-        className="block bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border rounded-xl p-6 hover:border-primary/50 transition-all duration-300 relative overflow-hidden group"
+        className="block bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border rounded-xl p-4 sm:p-6 hover:border-primary/50 transition-all duration-300 relative overflow-hidden group"
       >
         {/* 背景装飾 */}
         <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
@@ -42,7 +42,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary animate-pulse-slow" />
-              <h3 className="text-lg font-semibold text-foreground">{project.projectName}</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-foreground line-clamp-1">{project.projectName}</h3>
             </div>
             {isOverdue ? (
               <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 animate-bounce-slow" />
@@ -53,11 +53,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
             )}
           </div>
 
-      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
         {project.aspiration}
       </p>
 
-      <div className="flex items-center justify-between text-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs sm:text-sm">
         <span className="text-muted-foreground">次回チェック日</span>
         <span className={`font-medium ${isOverdue ? 'text-destructive' : 'text-foreground'}`}>
           {isOverdue && '期限超過: '}
@@ -66,7 +66,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
       </div>
 
           {!isOverdue && daysUntilCheck <= 7 && (
-            <div className="mt-3 text-xs text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 px-3 py-1 rounded-md">
+            <div className="mt-2 sm:mt-3 text-xs text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 px-2 sm:px-3 py-1 rounded-md">
               あと{daysUntilCheck}日でチェック
             </div>
           )}

@@ -71,10 +71,10 @@ export const FocusMapping: React.FC<FocusMappingProps> = ({
   return (
     <div className="space-y-6">
       {/* 説明 */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 sm:p-4">
         <div className="flex items-start gap-2">
-          <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-700 dark:text-blue-300">
+          <Info className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <div className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">
             <p className="font-medium mb-1">フォーカス・マッピングの使い方</p>
             <ul className="space-y-1 text-xs">
               <li>• 習慣要素をドラッグして、インパクトと実行可能性を評価しましょう</li>
@@ -88,18 +88,18 @@ export const FocusMapping: React.FC<FocusMappingProps> = ({
       {/* 2軸マトリクス */}
       <div className="relative">
         {/* 軸ラベル */}
-        <div className="absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 text-sm font-medium text-muted-foreground whitespace-nowrap">
+        <div className="absolute -left-12 sm:-left-16 top-1/2 -translate-y-1/2 -rotate-90 text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
           実行可能性
         </div>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-8 text-sm font-medium text-muted-foreground">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-6 sm:translate-y-8 text-xs sm:text-sm font-medium text-muted-foreground">
           インパクト
         </div>
         
         {/* 軸の矢印と数値 */}
-        <div className="absolute -left-8 top-0 text-xs text-muted-foreground">高い</div>
-        <div className="absolute -left-8 bottom-0 text-xs text-muted-foreground">低い</div>
-        <div className="absolute left-0 -bottom-6 text-xs text-muted-foreground">小</div>
-        <div className="absolute right-0 -bottom-6 text-xs text-muted-foreground">大</div>
+        <div className="absolute -left-6 sm:-left-8 top-0 text-xs text-muted-foreground">高い</div>
+        <div className="absolute -left-6 sm:-left-8 bottom-0 text-xs text-muted-foreground">低い</div>
+        <div className="absolute left-0 -bottom-5 sm:-bottom-6 text-xs text-muted-foreground">小</div>
+        <div className="absolute right-0 -bottom-5 sm:-bottom-6 text-xs text-muted-foreground">大</div>
 
         {/* マトリクス本体 */}
         <div className="relative w-full" style={{ paddingBottom: '75%' }}>
@@ -109,8 +109,9 @@ export const FocusMapping: React.FC<FocusMappingProps> = ({
           >
             {/* 黄金の行動エリア（右上）の強調 */}
             <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-yellow-200/50 to-green-200/50 dark:from-yellow-600/20 dark:to-green-600/20">
-              <div className="absolute top-2 right-2 text-xs font-medium text-green-700 dark:text-green-400">
-                黄金の行動
+              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 text-xs font-medium text-green-700 dark:text-green-400">
+                <span className="hidden sm:inline">黄金の行動</span>
+                <Target className="sm:hidden h-3 w-3" />
               </div>
             </div>
 
@@ -153,7 +154,7 @@ export const FocusMapping: React.FC<FocusMappingProps> = ({
                 <div
                   key={element.id}
                   className={`
-                    absolute px-3 py-2 bg-card border rounded-lg shadow-sm
+                    absolute px-2 sm:px-3 py-1.5 sm:py-2 bg-card border rounded-lg shadow-sm
                     ${draggingId === element.id ? 'cursor-grabbing z-10 shadow-lg' : 'cursor-grab hover:shadow-md'}
                     transition-shadow
                   `}
@@ -161,11 +162,11 @@ export const FocusMapping: React.FC<FocusMappingProps> = ({
                     left: `${x}%`,
                     top: `${y}%`,
                     transform: 'translate(-50%, -50%)',
-                    maxWidth: '180px',
+                    maxWidth: '120px',
                   }}
                   onMouseDown={(e) => handleMouseDown(e, element.id!)}
                 >
-                  <div className="flex items-center gap-1 text-sm">
+                  <div className="flex items-center gap-1 text-xs sm:text-sm">
                     <Move className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                     <span className="truncate font-medium">{element.elementName}</span>
                   </div>

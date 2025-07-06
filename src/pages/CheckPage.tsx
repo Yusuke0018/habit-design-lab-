@@ -109,27 +109,27 @@ export const CheckPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto">
       {/* ヘッダー */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <Link
           to={`/projects/${id}`}
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
+          className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4"
         >
-          <ArrowLeft className="h-4 w-4 mr-1" />
+          <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
           プロジェクトに戻る
         </Link>
         
-        <h1 className="text-3xl font-bold mb-2">振り返り</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-xl sm:text-3xl font-bold mb-2">振り返り</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
           プロジェクト「{project.projectName}」の進捗を振り返りましょう
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         {/* 現在のデザイン（参考） */}
-        <div className="lg:col-span-1">
-          <div className="bg-card border rounded-lg p-4 sticky top-4">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
+        <div className="lg:col-span-1 order-2 lg:order-1">
+          <div className="bg-card border rounded-lg p-3 sm:p-4 lg:sticky lg:top-4">
+            <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+              <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               現在の習慣要素
             </h3>
             
@@ -137,8 +137,8 @@ export const CheckPage: React.FC = () => {
               <div className="space-y-2">
                 {habitElements.map((element) => (
                   <div key={element.id} className="p-2 bg-muted/30 rounded-md">
-                    <p className="text-sm font-medium">{element.elementName}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs sm:text-sm font-medium">{element.elementName}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1">
                       {element.mapSets.length}個のB=MAPセット
                     </p>
                   </div>
@@ -162,68 +162,68 @@ export const CheckPage: React.FC = () => {
         </div>
 
         {/* 振り返りフォーム */}
-        <div className="lg:col-span-2">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="lg:col-span-2 order-1 lg:order-2">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* うまくいった点 */}
-            <div className="bg-card border rounded-lg p-6">
-              <label className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <CheckCircle className="h-5 w-5 text-green-500" />
+            <div className="bg-card border rounded-lg p-4 sm:p-6">
+              <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
                 うまくいった点
               </label>
               <textarea
                 value={reflection.well}
                 onChange={(e) => setReflection({ ...reflection, well: e.target.value })}
-                className="w-full px-4 py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
                 placeholder="実践できた習慣や、良かった変化を書きましょう"
               />
             </div>
 
             {/* 難しかった点 */}
-            <div className="bg-card border rounded-lg p-6">
-              <label className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <XCircle className="h-5 w-5 text-orange-500" />
+            <div className="bg-card border rounded-lg p-4 sm:p-6">
+              <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
+                <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
                 難しかった点
               </label>
               <textarea
                 value={reflection.challenge}
                 onChange={(e) => setReflection({ ...reflection, challenge: e.target.value })}
-                className="w-full px-4 py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
                 placeholder="実践が難しかった習慣や、障害となったことを書きましょう"
               />
             </div>
 
             {/* 次に試したいこと */}
-            <div className="bg-card border rounded-lg p-6">
-              <label className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <TrendingUp className="h-5 w-5 text-blue-500" />
+            <div className="bg-card border rounded-lg p-4 sm:p-6">
+              <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
                 次に試したいこと
               </label>
               <textarea
                 value={reflection.next}
                 onChange={(e) => setReflection({ ...reflection, next: e.target.value })}
-                className="w-full px-4 py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
                 placeholder="改善案や新しいアプローチを書きましょう"
               />
             </div>
 
             {/* 自由記述 */}
-            <div className="bg-card border rounded-lg p-6">
-              <label className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <MessageSquare className="h-5 w-5 text-purple-500" />
+            <div className="bg-card border rounded-lg p-4 sm:p-6">
+              <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500" />
                 自由記述
               </label>
               <textarea
                 value={reflection.freeText}
                 onChange={(e) => setReflection({ ...reflection, freeText: e.target.value })}
-                className="w-full px-4 py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
                 placeholder="その他、気づいたことや感じたことを自由に書きましょう"
               />
             </div>
 
             {/* 次回チェック日 */}
-            <div className="bg-card border rounded-lg p-6">
-              <label className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <Calendar className="h-5 w-5" />
+            <div className="bg-card border rounded-lg p-4 sm:p-6">
+              <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
                 次回チェック日
               </label>
               <input
@@ -232,10 +232,10 @@ export const CheckPage: React.FC = () => {
                 onChange={(e) => setNextCheckDate(new Date(e.target.value))}
                 min={formatDateForInput(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000))}
                 max={formatDateForInput(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))}
-                className="w-full px-4 py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
                 required
               />
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
                 3日後〜1ヶ月後の範囲で設定できます
               </p>
             </div>
@@ -250,11 +250,11 @@ export const CheckPage: React.FC = () => {
             )}
 
             {/* ボタン */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="submit"
                 disabled={saveReflectionMutation.isPending || (!reflection.well && !reflection.challenge && !reflection.next && !reflection.freeText)}
-                className="flex-1 bg-primary text-primary-foreground py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-primary text-primary-foreground py-2.5 sm:py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 {saveReflectionMutation.isPending ? (
                   <>
@@ -271,7 +271,7 @@ export const CheckPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/projects/${id}`)}
-                className="px-6 py-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors"
+                className="px-4 sm:px-6 py-2.5 sm:py-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors text-sm sm:text-base"
               >
                 キャンセル
               </button>

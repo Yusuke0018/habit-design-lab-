@@ -46,7 +46,7 @@ export const ProjectCreatePage: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">新規プロジェクト作成</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">新規プロジェクト作成</h2>
       
       <form onSubmit={handleSubmit} className="bg-card p-8 rounded-lg border space-y-6">
         {/* プロジェクト名 */}
@@ -129,7 +129,7 @@ export const ProjectCreatePage: React.FC = () => {
               required
             />
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs text-muted-foreground hidden sm:block">
             3日後〜1ヶ月後の範囲で設定できます。最初は1週間後がおすすめです
           </p>
         </div>
@@ -144,11 +144,11 @@ export const ProjectCreatePage: React.FC = () => {
         )}
 
         {/* ボタン */}
-        <div className="flex gap-3 pt-4">
+        <div className="flex flex-col sm:flex-row gap-3 pt-2 sm:pt-4">
           <button
             type="submit"
             disabled={createMutation.isPending}
-            className="flex-1 bg-primary text-primary-foreground py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="flex-1 bg-primary text-primary-foreground py-2.5 sm:py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
           >
             {createMutation.isPending ? (
               <>
@@ -162,7 +162,7 @@ export const ProjectCreatePage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors"
+            className="px-6 py-2.5 sm:py-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors text-sm sm:text-base"
           >
             キャンセル
           </button>
@@ -170,9 +170,9 @@ export const ProjectCreatePage: React.FC = () => {
       </form>
 
       {/* 説明テキスト */}
-      <div className="mt-8 bg-muted/30 rounded-lg p-6">
-        <h3 className="font-semibold mb-3">プロジェクト作成のヒント</h3>
-        <ul className="space-y-2 text-sm text-muted-foreground">
+      <div className="mt-6 sm:mt-8 bg-muted/30 rounded-lg p-4 sm:p-6">
+        <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">プロジェクト作成のヒント</h3>
+        <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-muted-foreground">
           <li className="flex items-start">
             <span className="mr-2">•</span>
             <span>願望は具体的に、測定可能な形で書くと効果的です</span>

@@ -22,27 +22,27 @@ export const Layout: React.FC = () => {
     <div className="min-h-screen bg-background">
       {/* ヘッダー */}
       <header className="bg-card border-b">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <Link to="/dashboard" className="flex items-center space-x-2">
-              <Calendar className="h-6 w-6 text-primary" />
-              <h1 className="text-xl font-bold">習慣デザイン・ラボ</h1>
+            <Link to="/dashboard" className="flex items-center space-x-1 sm:space-x-2">
+              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <h1 className="text-base sm:text-xl font-bold">習慣デザイン・ラボ</h1>
             </Link>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {user?.photoURL && (
                 <img
                   src={user.photoURL}
                   alt={user.displayName || 'User'}
-                  className="h-8 w-8 rounded-full"
+                  className="h-6 w-6 sm:h-8 sm:w-8 rounded-full"
                 />
               )}
-              <span className="text-sm text-muted-foreground">
+              <span className="hidden sm:block text-sm text-muted-foreground">
                 {user?.displayName || user?.email}
               </span>
               <button
                 onClick={signOut}
-                className="p-2 hover:bg-accent rounded-md transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-accent rounded-md transition-colors"
                 title="ログアウト"
               >
                 <LogOut className="h-4 w-4" />
@@ -53,30 +53,30 @@ export const Layout: React.FC = () => {
       </header>
 
       {/* ナビゲーション */}
-      <nav className="bg-card border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex space-x-1">
+      <nav className="bg-card border-b overflow-x-auto">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="flex space-x-1 min-w-max">
             <Link
               to="/dashboard"
-              className={`px-4 py-3 text-sm font-medium transition-colors flex items-center space-x-2 border-b-2 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap ${
                 isActive('/dashboard')
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Home className="h-4 w-4" />
+              <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>ダッシュボード</span>
             </Link>
             
             <Link
               to="/projects/new"
-              className={`px-4 py-3 text-sm font-medium transition-colors flex items-center space-x-2 border-b-2 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap ${
                 isActive('/projects/new')
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>新規プロジェクト</span>
             </Link>
           </div>
@@ -84,7 +84,7 @@ export const Layout: React.FC = () => {
       </nav>
 
       {/* メインコンテンツ */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4 sm:py-8">
         <Outlet />
       </main>
     </div>

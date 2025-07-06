@@ -143,26 +143,26 @@ export const ProjectDetailPage: React.FC = () => {
   return (
     <div>
       {/* ヘッダー */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <Link
           to="/dashboard"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
+          className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4"
         >
-          <ArrowLeft className="h-4 w-4 mr-1" />
+          <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
           ダッシュボードに戻る
         </Link>
         
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{project.projectName}</h1>
+            <h1 className="text-xl sm:text-3xl font-bold mb-2">{project.projectName}</h1>
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Target className="h-4 w-4" />
-                <span className="text-sm">{project.aspiration}</span>
+                <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">{project.aspiration}</span>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Heart className="h-4 w-4" />
-                <span className="text-sm">{project.feeling}</span>
+                <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">{project.feeling}</span>
               </div>
             </div>
           </div>
@@ -170,16 +170,16 @@ export const ProjectDetailPage: React.FC = () => {
           <div className="flex gap-2">
             <Link
               to={`/projects/${id}/check`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm"
             >
-              <CheckCircle2 className="h-4 w-4" />
+              <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               振り返り
             </Link>
             <Link
               to={`/projects/${id}/history`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 text-sm"
             >
-              <HistoryIcon className="h-4 w-4" />
+              <HistoryIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               履歴
             </Link>
           </div>
@@ -187,33 +187,35 @@ export const ProjectDetailPage: React.FC = () => {
       </div>
 
       {/* タブ切り替え */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4 sm:mb-6">
         <button
           onClick={() => setShowMapping(false)}
-          className={`px-4 py-2 rounded-md transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-md transition-colors text-xs sm:text-sm ${
             !showMapping 
               ? 'bg-primary text-primary-foreground' 
               : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
           }`}
         >
-          習慣要素一覧
+          <span className="hidden sm:inline">習慣要素一覧</span>
+          <span className="sm:hidden">要素一覧</span>
         </button>
         <button
           onClick={() => setShowMapping(true)}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+          className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md transition-colors text-xs sm:text-sm ${
             showMapping 
               ? 'bg-primary text-primary-foreground' 
               : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
           }`}
         >
-          <Map className="h-4 w-4" />
-          フォーカス・マッピング
+          <Map className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="hidden sm:inline">フォーカス・マッピング</span>
+          <span className="sm:hidden">マッピング</span>
         </button>
       </div>
 
       {/* コンテンツエリア */}
       {showMapping ? (
-        <div className="bg-card p-8 rounded-lg border">
+        <div className="bg-card p-4 sm:p-8 rounded-lg border">
           {habitElements && habitElements.length > 0 ? (
             <FocusMapping
               habitElements={habitElements}

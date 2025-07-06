@@ -51,7 +51,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
   return (
     <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
       {/* カードヘッダー */}
-      <div className="p-4 flex items-center justify-between bg-gradient-to-r from-transparent to-primary/5">
+      <div className="p-3 sm:p-4 flex items-center justify-between bg-gradient-to-r from-transparent to-primary/5">
         <div className="flex items-center flex-1">
           <GripVertical className="h-5 w-5 text-muted-foreground mr-2 cursor-move" />
           
@@ -82,7 +82,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
               </button>
             </div>
           ) : (
-            <h3 className="font-medium text-lg flex-1">{element.elementName}</h3>
+            <h3 className="font-medium text-base sm:text-lg flex-1 line-clamp-1">{element.elementName}</h3>
           )}
         </div>
 
@@ -105,7 +105,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
           </button>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-1.5 hover:bg-accent rounded-md transition-colors"
+            className="p-1 sm:p-1.5 hover:bg-accent rounded-md transition-colors"
           >
             {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
@@ -114,8 +114,8 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
 
       {/* B=MAPセット一覧 */}
       {isExpanded && (
-        <div className="px-4 pb-4">
-          <div className="space-y-3">
+        <div className="px-3 sm:px-4 pb-3 sm:pb-4">
+          <div className="space-y-2 sm:space-y-3">
             {element.mapSets.map((mapSet) => (
               <div key={mapSet.id} className="bg-muted/30 rounded-md p-3">
                 {editingMAPSetId === mapSet.id ? (
@@ -218,8 +218,8 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                 onClick={() => setIsAddingMAPSet(true)}
                 className="w-full flex items-center justify-center gap-2 py-2 border-2 border-dashed border-muted-foreground/30 rounded-md hover:border-primary/50 transition-colors"
               >
-                <Plus className="h-4 w-4" />
-                <span className="text-sm">B=MAPセットを追加</span>
+                <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">B=MAPセットを追加</span>
               </button>
             )}
           </div>
