@@ -6,7 +6,7 @@
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '../types';
+import type { User } from '../types';
 import { onAuthStateChange, signInWithGoogle, signOut } from '../services/auth';
 
 interface AuthContextType {

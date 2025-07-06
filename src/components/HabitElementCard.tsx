@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Plus, Edit2, Trash2, GripVertical } from 'lucide-react';
-import { HabitElement, MAPSet } from '../types';
+import type { HabitElement, MAPSet } from '../types';
 
 interface HabitElementCardProps {
   element: HabitElement;

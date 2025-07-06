@@ -8,7 +8,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
-import { Project } from '../types';
+import type { Project } from '../types';
 import { AnimatedCard } from './AnimatedCard';
 
 interface ProjectCardProps {

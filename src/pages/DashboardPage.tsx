@@ -5,15 +5,14 @@
  * 関連クラス: ProjectService, ProjectCard
  */
 
-import React, { useEffect, useState } from 'react';
-import { Plus, Loader2 } from 'lucide-react';
+import React from 'react';
+import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ProjectCard } from '../components/ProjectCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getUserProjects } from '../services/projects';
-import { Project } from '../types';
 
 export const DashboardPage: React.FC = () => {
   const { data: projects, isLoading, error } = useQuery({

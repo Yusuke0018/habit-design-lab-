@@ -7,7 +7,6 @@
 
 import {
   collection,
-  doc,
   addDoc,
   getDocs,
   query,
@@ -16,7 +15,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { History, HabitElement } from '../types';
+import type { History } from '../types';
 import { getHabitElements } from './habitElements';
 
 /**

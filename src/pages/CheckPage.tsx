@@ -23,7 +23,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getHabitElements } from '../services/habitElements';
 import { saveReflection, getLatestReflection } from '../services/history';
-import { Reflection } from '../types';
+import type { Reflection } from '../types';
 
 export const CheckPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,7 +66,7 @@ export const CheckPage: React.FC = () => {
   const saveReflectionMutation = useMutation({
     mutationFn: async () => {
       // 振り返りを保存
-      await saveReflection(id!, reflection);
+      await saveReflection(id!, { reflection });
       // 次回チェック日を更新
       await updateProject(id!, { nextCheckDate });
     },

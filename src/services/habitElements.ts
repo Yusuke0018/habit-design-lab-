@@ -18,7 +18,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { HabitElement, MAPSet } from '../types';
+import type { HabitElement, MAPSet } from '../types';
 
 /**
  * 習慣要素を作成

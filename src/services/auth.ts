@@ -10,10 +10,10 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
   onAuthStateChanged,
-  User as FirebaseUser,
+  type User as FirebaseUser,
 } from 'firebase/auth';
 import { auth } from './firebase';
-import { User } from '../types';
+import type { User } from '../types';
 
 // Googleプロバイダーの設定
 const googleProvider = new GoogleAuthProvider();

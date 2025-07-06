@@ -5,7 +5,6 @@
  * 関連クラス: AuthContext, Router, Layout
  */
 
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
@@ -23,8 +22,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5分
-      cacheTime: 1000 * 60 * 10, // 10分
+      // cacheTimeは削除（v5ではgcTimeを使用）
       retry: 1,
+      gcTime: 1000 * 60 * 10, // 10分（cacheTimeから変更）
     },
   },
 });

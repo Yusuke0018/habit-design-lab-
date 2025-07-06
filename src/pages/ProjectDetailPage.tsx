@@ -6,15 +6,13 @@
  */
 
 import React, { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   Plus, 
   Map, 
-  Calendar, 
   Target, 
   Heart, 
-  Loader2, 
   ArrowLeft,
   CheckCircle2,
   History as HistoryIcon 
@@ -23,7 +21,7 @@ import { HabitElementCard } from '../components/HabitElementCard';
 import { FocusMapping } from '../components/FocusMapping';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
-import { getProject, updateProject } from '../services/projects';
+import { getProject } from '../services/projects';
 import { 
   getHabitElements, 
   createHabitElement, 
@@ -33,11 +31,10 @@ import {
   updateMAPSet,
   deleteMAPSet
 } from '../services/habitElements';
-import { HabitElement, MAPSet } from '../types';
+import type { HabitElement, MAPSet } from '../types';
 
 export const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isAddingElement, setIsAddingElement] = useState(false);
   const [newElementName, setNewElementName] = useState('');

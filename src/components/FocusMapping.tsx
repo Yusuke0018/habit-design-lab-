@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { HabitElement } from '../types';
+import type { HabitElement } from '../types';
 import { Info, Target, Move } from 'lucide-react';
 
 interface FocusMappingProps {

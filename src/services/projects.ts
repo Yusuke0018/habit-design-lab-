@@ -20,7 +20,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { Project, HabitElement, History } from '../types';
+import type { Project } from '../types';
 import { getCurrentUser } from './auth';
 
 const COLLECTION_NAME = 'projects';

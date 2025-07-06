@@ -18,13 +18,11 @@ import {
   XCircle,
   TrendingUp,
   MessageSquare,
-  Loader2,
   Target,
   Brain
 } from 'lucide-react';
 import { getProject } from '../services/projects';
 import { getProjectHistory } from '../services/history';
-import { History } from '../types';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 

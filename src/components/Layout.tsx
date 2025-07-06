@@ -8,7 +8,7 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, Home, Plus, Calendar, History } from 'lucide-react';
+import { LogOut, Home, Plus, Calendar } from 'lucide-react';
 
 export const Layout: React.FC = () => {
   const { user, signOut } = useAuth();
