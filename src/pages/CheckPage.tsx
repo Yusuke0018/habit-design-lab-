@@ -18,7 +18,9 @@ import {
   Loader2,
   Sparkles,
   Target,
-  Lightbulb
+  Lightbulb,
+  Brain,
+  Settings
 } from 'lucide-react';
 import { getProject, updateProject } from '../services/projects';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -26,6 +28,10 @@ import { ErrorMessage } from '../components/ErrorMessage';
 import { getHabitElements } from '../services/habitElements';
 import { saveReflection, getLatestReflection } from '../services/history';
 import type { Reflection } from '../types';
+import { aiService, type AIAdvice } from '../services/ai';
+import { AIAdviceDisplay } from '../components/AIAdvice';
+import { AISettings } from '../components/AISettings';
+import { useToast } from '../hooks/useToast';
 
 export const CheckPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,6 +48,10 @@ export const CheckPage: React.FC = () => {
   const [nextCheckDate, setNextCheckDate] = useState<Date>(
     new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // デフォルト7日後
   );
+  const [aiAdvice, setAiAdvice] = useState<AIAdvice | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [showAiSettings, setShowAiSettings] = useState(false);
+  const { addToast } = useToast();
 
   // プロジェクト情報を取得
   const { data: project, isLoading: projectLoading } = useQuery({
@@ -79,6 +89,37 @@ export const CheckPage: React.FC = () => {
       navigate(`/projects/${id}`);
     },
   });
+
+  // AIアドバイスを生成
+  const generateAIAdvice = async () => {
+    if (!project || !habitElements) return;
+
+    if (!aiService.hasApiKey()) {
+      setShowAiSettings(true);
+      return;
+    }
+
+    setIsAiLoading(true);
+    try {
+      const advice = await aiService.analyzeCheckHistory({
+        project,
+        habitElements,
+        checkHistory: {
+          wellDone: reflection.well,
+          difficult: reflection.challenge,
+          nextTry: reflection.next,
+          freeText: reflection.freeText,
+          checkedAt: new Date().toISOString(),
+        },
+      });
+      setAiAdvice(advice);
+    } catch (error) {
+      console.error('AI advice generation failed:', error);
+      addToast('AIアドバイスの生成に失敗しました', 'error');
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -279,6 +320,54 @@ export const CheckPage: React.FC = () => {
               />
             )}
 
+            {/* AIアドバイス */}
+            {(reflection.well || reflection.challenge || reflection.next || reflection.freeText) && (
+              <div className="glass rounded-2xl border-2 border-purple-500/30 p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="flex items-center gap-2 text-base sm:text-lg font-semibold">
+                    <Brain className="h-5 w-5 text-purple-500" />
+                    <span className="text-gray-900 dark:text-white">AIアドバイス</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowAiSettings(true)}
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                    title="APIキー設定"
+                  >
+                    <Settings className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {aiAdvice ? (
+                  <AIAdviceDisplay advice={aiAdvice} isLoading={isAiLoading} />
+                ) : (
+                  <div className="text-center py-8">
+                    <button
+                      type="button"
+                      onClick={generateAIAdvice}
+                      disabled={isAiLoading}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors"
+                    >
+                      {isAiLoading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          分析中...
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="h-4 w-4" />
+                          AIアドバイスを生成
+                        </>
+                      )}
+                    </button>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      振り返り内容を分析して、AIがアドバイスを提供します
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* ボタン */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
@@ -310,6 +399,9 @@ export const CheckPage: React.FC = () => {
           </form>
         </div>
       </div>
+
+      {/* AI設定モーダル */}
+      <AISettings isOpen={showAiSettings} onClose={() => setShowAiSettings(false)} />
     </div>
   );
 };

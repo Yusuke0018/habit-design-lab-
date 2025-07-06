@@ -5,16 +5,18 @@
  * 関連クラス: ProjectService, ProjectCard
  */
 
-import React from 'react';
-import { Plus, Sparkles, Rocket, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Sparkles, Rocket, Star, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ProjectCard } from '../components/ProjectCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getUserProjects } from '../services/projects';
+import { AISettings } from '../components/AISettings';
 
 export const DashboardPage: React.FC = () => {
+  const [showAiSettings, setShowAiSettings] = useState(false);
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: getUserProjects,
@@ -44,6 +46,13 @@ export const DashboardPage: React.FC = () => {
           </div>
           <h2 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">プロジェクト一覧</h2>
         </div>
+        <button
+          onClick={() => setShowAiSettings(true)}
+          className="p-2 glass-subtle hover:bg-primary/20 rounded-lg transition-all duration-300"
+          title="AI設定"
+        >
+          <Settings className="h-5 w-5 text-primary" />
+        </button>
         {projects && projects.length > 0 && (
           <div className="glass px-3 py-1.5 rounded-full">
             <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
@@ -102,6 +111,9 @@ export const DashboardPage: React.FC = () => {
           <div className="absolute inset-0 btn-primary rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity" />
         </Link>
       )}
+
+      {/* AI設定モーダル */}
+      <AISettings isOpen={showAiSettings} onClose={() => setShowAiSettings(false)} />
     </div>
   );
 };
