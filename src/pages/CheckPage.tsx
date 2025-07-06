@@ -115,7 +115,7 @@ export const CheckPage: React.FC = () => {
       setAiAdvice(advice);
     } catch (error) {
       console.error('AI advice generation failed:', error);
-      addToast('AIアドバイスの生成に失敗しました', 'error');
+      addToast('error', 'AIアドバイスの生成に失敗しました');
     } finally {
       setIsAiLoading(false);
     }

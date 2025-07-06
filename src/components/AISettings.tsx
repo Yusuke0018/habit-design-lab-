@@ -30,22 +30,22 @@ export const AISettings: React.FC<AISettingsProps> = ({ isOpen, onClose }) => {
 
   const handleSave = async () => {
     if (!apiKey.trim()) {
-      addToast('APIキーを入力してください', 'error');
+      addToast('error', 'APIキーを入力してください');
       return;
     }
 
     if (!apiKey.startsWith('sk-')) {
-      addToast('有効なOpenAI APIキーを入力してください', 'error');
+      addToast('error', '有効なOpenAI APIキーを入力してください');
       return;
     }
 
     setIsSaving(true);
     try {
       aiService.setApiKey(apiKey.trim());
-      addToast('APIキーを保存しました', 'success');
+      addToast('success', 'APIキーを保存しました');
       onClose();
     } catch (error) {
-      addToast('保存に失敗しました', 'error');
+      addToast('error', '保存に失敗しました');
     } finally {
       setIsSaving(false);
     }
