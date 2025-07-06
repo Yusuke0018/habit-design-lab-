@@ -19,7 +19,7 @@ import {
   Timestamp,
   serverTimestamp,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, auth } from './firebase';
 import type { Project } from '../types';
 import { getCurrentUser } from './auth';
 
@@ -32,16 +32,56 @@ export const createProject = async (
   projectData: Omit<Project, 'id' | 'ownerUid' | 'createdAt'>
 ): Promise<string> => {
   const user = getCurrentUser();
-  if (!user) throw new Error('User not authenticated');
+  if (!user) {
+    console.error('createProject: ユーザーが認証されていません');
+    throw new Error('ユーザーが認証されていません。ログインしてください。');
+  }
 
-  const docRef = await addDoc(collection(db, COLLECTION_NAME), {
-    ...projectData,
-    ownerUid: user.uid,
-    createdAt: serverTimestamp(),
-    nextCheckDate: Timestamp.fromDate(projectData.nextCheckDate),
-  });
+  try {
+    console.log('createProject: プロジェクト作成開始', {
+      projectName: projectData.projectName,
+      ownerUid: user.uid,
+      nextCheckDate: projectData.nextCheckDate
+    });
+    
+    // Firebaseの接続状態を確認
+    console.log('Firebase Auth状態:', auth.currentUser?.uid);
+    console.log('Firestore instance:', db);
 
-  return docRef.id;
+    const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+      ...projectData,
+      ownerUid: user.uid,
+      createdAt: serverTimestamp(),
+      nextCheckDate: Timestamp.fromDate(projectData.nextCheckDate),
+    });
+
+    console.log('createProject: プロジェクト作成成功', { projectId: docRef.id });
+    return docRef.id;
+  } catch (error) {
+    console.error('createProject: プロジェクト作成エラー', error);
+    
+    // エラーの詳細情報を出力
+    if (error && typeof error === 'object') {
+      console.error('Error details:', {
+        name: (error as any).name,
+        code: (error as any).code,
+        message: (error as any).message,
+        stack: (error as any).stack
+      });
+    }
+    
+    // より詳細なエラーメッセージを提供
+    if (error instanceof Error) {
+      if (error.message.includes('Missing or insufficient permissions')) {
+        throw new Error('プロジェクトの作成権限がありません。Firebaseの設定を確認してください。');
+      }
+      if (error.message.includes('Failed to get document because the client is offline')) {
+        throw new Error('インターネット接続を確認してください。');
+      }
+      throw error;
+    }
+    throw new Error('プロジェクトの作成中に予期しないエラーが発生しました。');
+  }
 };
 
 /**

@@ -26,21 +26,43 @@ export const ProjectCreatePage: React.FC = () => {
   });
 
   const createMutation = useMutation({
-    mutationFn: () => createProject(formData),
+    mutationFn: () => {
+      console.log('プロジェクト作成を開始します:', formData);
+      return createProject(formData);
+    },
     onSuccess: (projectId) => {
+      console.log('プロジェクト作成成功:', projectId);
       queryClient.invalidateQueries({ queryKey: ['projects'] });
-      navigate(`/projects/${projectId}`);
+      // 少し遅延させてから遷移（Firestoreの書き込みが完全に完了するまで待つ）
+      setTimeout(() => {
+        navigate(`/projects/${projectId}`);
+      }, 500);
     },
     onError: (error) => {
+      console.error('プロジェクト作成エラー:', error);
       handleError(error);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.projectName && formData.aspiration && formData.feeling) {
-      createMutation.mutate();
+    clearError(); // 以前のエラーをクリア
+    
+    // バリデーション
+    if (!formData.projectName.trim()) {
+      handleError(new Error('プロジェクト名を入力してください'));
+      return;
     }
+    if (!formData.aspiration.trim()) {
+      handleError(new Error('具体的な願望を入力してください'));
+      return;
+    }
+    if (!formData.feeling.trim()) {
+      handleError(new Error('得たい感情を入力してください'));
+      return;
+    }
+    
+    createMutation.mutate();
   };
 
   const formatDateForInput = (date: Date) => {

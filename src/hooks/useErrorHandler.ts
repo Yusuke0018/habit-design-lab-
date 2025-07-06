@@ -27,6 +27,7 @@ export const useErrorHandler = () => {
     if (error instanceof FirebaseError) {
       // Firebaseエラーの処理
       const errorMessages: Record<string, string> = {
+        // 認証関連
         'auth/invalid-email': 'メールアドレスの形式が正しくありません',
         'auth/user-disabled': 'このアカウントは無効化されています',
         'auth/user-not-found': 'ユーザーが見つかりません',
@@ -34,11 +35,15 @@ export const useErrorHandler = () => {
         'auth/popup-closed-by-user': 'ログイン画面が閉じられました',
         'auth/cancelled-popup-request': 'ログイン処理がキャンセルされました',
         'auth/network-request-failed': 'ネットワークエラーが発生しました',
-        'permission-denied': 'アクセス権限がありません',
+        'auth/requires-recent-login': '再ログインが必要です',
+        // Firestore関連
+        'permission-denied': 'アクセス権限がありません。ログイン状態を確認してください',
         'not-found': 'データが見つかりません',
         'already-exists': 'すでに存在するデータです',
         'deadline-exceeded': 'リクエストがタイムアウトしました',
         'unavailable': 'サービスが一時的に利用できません',
+        'failed-precondition': 'データの前提条件が満たされていません',
+        'invalid-argument': '無効なデータが入力されました',
       };
 
       const message = errorMessages[error.code] || 'エラーが発生しました';
