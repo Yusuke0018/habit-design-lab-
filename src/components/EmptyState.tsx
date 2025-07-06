@@ -41,7 +41,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         </div>
         
         {/* タイトルと説明 */}
-        <h3 className="font-bold text-lg sm:text-2xl mb-3 gradient-text">
+        <h3 className="font-bold text-lg sm:text-2xl mb-3 text-gray-900 dark:text-white">
           {title}
         </h3>
         <p className="text-muted-foreground text-sm sm:text-base mb-6 max-w-md mx-auto">

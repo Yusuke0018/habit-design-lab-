@@ -81,7 +81,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
                 <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm text-muted-foreground">次回チェック</span>
               </div>
-              <span className={`font-bold text-sm ${isOverdue ? 'text-destructive animate-pulse' : 'gradient-text'}`}>
+              <span className={`font-bold text-sm ${isOverdue ? 'text-destructive animate-pulse' : 'text-primary'}`}>
                 {isOverdue && '⚠️ '}
                 {formatDate(checkDate)}
               </span>

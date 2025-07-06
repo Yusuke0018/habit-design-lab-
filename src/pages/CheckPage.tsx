@@ -125,7 +125,7 @@ export const CheckPage: React.FC = () => {
             <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-primary animate-float" />
             <div className="absolute inset-0 bg-primary/50 blur-2xl" />
           </div>
-          <h1 className="text-xl sm:text-3xl font-bold gradient-text">振り返りタイム</h1>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">振り返りタイム</h1>
         </div>
         <p className="text-sm sm:text-base text-muted-foreground">
           プロジェクト「{project.projectName}」の進捗を振り返りましょう
@@ -141,7 +141,7 @@ export const CheckPage: React.FC = () => {
                 <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                 <div className="absolute inset-0 bg-primary/50 blur-lg" />
               </div>
-              <span className="gradient-text">現在の習慣要素</span>
+              <span className="text-gray-900 dark:text-white">現在の習慣要素</span>
             </h3>
             
             {habitElements && habitElements.length > 0 ? (
@@ -152,7 +152,7 @@ export const CheckPage: React.FC = () => {
                     className="p-2 glass-subtle rounded-lg animate-fadeInUp"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <p className="text-xs sm:text-sm font-medium gradient-text">{element.elementName}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{element.elementName}</p>
                     <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1">
                       {element.mapSets.length}個のB=MAPセット
                     </p>
@@ -186,7 +186,7 @@ export const CheckPage: React.FC = () => {
                   <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-success animate-bounce-slow" />
                   <div className="absolute inset-0 bg-success/50 blur-xl" />
                 </div>
-                <span className="gradient-text">うまくいった点</span>
+                <span className="text-gray-900 dark:text-white">うまくいった点</span>
               </label>
               <textarea
                 value={reflection.well}
@@ -203,7 +203,7 @@ export const CheckPage: React.FC = () => {
                   <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-warning animate-pulse" />
                   <div className="absolute inset-0 bg-warning/50 blur-xl" />
                 </div>
-                <span className="gradient-text">難しかった点</span>
+                <span className="text-gray-900 dark:text-white">難しかった点</span>
               </label>
               <textarea
                 value={reflection.challenge}
@@ -220,7 +220,7 @@ export const CheckPage: React.FC = () => {
                   <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-info animate-float" />
                   <div className="absolute inset-0 bg-info/50 blur-xl" />
                 </div>
-                <span className="gradient-text">次に試したいこと</span>
+                <span className="text-gray-900 dark:text-white">次に試したいこと</span>
               </label>
               <textarea
                 value={reflection.next}
@@ -237,7 +237,7 @@ export const CheckPage: React.FC = () => {
                   <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5 text-accent animate-pulse-slow" />
                   <div className="absolute inset-0 bg-accent/50 blur-xl" />
                 </div>
-                <span className="gradient-text">気づき・アイデア</span>
+                <span className="text-gray-900 dark:text-white">気づき・アイデア</span>
               </label>
               <textarea
                 value={reflection.freeText}
@@ -254,7 +254,7 @@ export const CheckPage: React.FC = () => {
                   <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-spin-slow" />
                   <div className="absolute inset-0 bg-primary/50 blur-xl" />
                 </div>
-                <span className="gradient-text">次回チェック日</span>
+                <span className="text-gray-900 dark:text-white">次回チェック日</span>
               </label>
               <input
                 type="date"

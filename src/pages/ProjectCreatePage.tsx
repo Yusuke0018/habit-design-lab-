@@ -79,7 +79,7 @@ export const ProjectCreatePage: React.FC = () => {
           <Rocket className="h-8 w-8 sm:h-10 sm:w-10 text-primary animate-bounce-slow" />
           <div className="absolute inset-0 bg-primary/50 blur-2xl" />
         </div>
-        <h2 className="text-xl sm:text-3xl font-bold gradient-text">新しい習慣プロジェクトを始めよう！</h2>
+        <h2 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">新しい習慣プロジェクトを始めよう！</h2>
       </div>
       
       <form onSubmit={handleSubmit} className="glass rounded-2xl border-2 border-white/20 p-6 sm:p-8 space-y-6 relative overflow-hidden">
@@ -116,7 +116,7 @@ export const ProjectCreatePage: React.FC = () => {
         <div className="relative z-10">
           <label htmlFor="aspiration" className="block text-sm font-medium mb-2 flex items-center gap-2">
             <Lightbulb className="h-4 w-4 text-warning animate-pulse" />
-            <span className="gradient-text">具体的な願望 (Outcome)</span>
+            <span className="text-gray-900 dark:text-white">具体的な願望 (Outcome)</span>
             <span className="text-destructive">*</span>
           </label>
           <textarea
@@ -136,7 +136,7 @@ export const ProjectCreatePage: React.FC = () => {
         <div className="relative z-10">
           <label htmlFor="feeling" className="block text-sm font-medium mb-2 flex items-center gap-2">
             <Heart className="h-4 w-4 text-accent animate-pulse-slow" />
-            <span className="gradient-text">得たい感情 (Feeling)</span>
+            <span className="text-gray-900 dark:text-white">得たい感情 (Feeling)</span>
             <span className="text-destructive">*</span>
           </label>
           <div className="relative group">
@@ -162,7 +162,7 @@ export const ProjectCreatePage: React.FC = () => {
         <div className="relative z-10">
           <label htmlFor="nextCheckDate" className="block text-sm font-medium mb-2 flex items-center gap-2">
             <Calendar className="h-4 w-4 text-info" />
-            <span className="gradient-text">最初のチェック日</span>
+            <span className="text-gray-900 dark:text-white">最初のチェック日</span>
           </label>
           <div className="relative group">
             <div className="absolute left-3 top-3 text-info animate-bounce-slow">
@@ -228,7 +228,7 @@ export const ProjectCreatePage: React.FC = () => {
       <div className="mt-6 sm:mt-8 glass rounded-2xl border border-white/10 p-4 sm:p-6 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
         <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base flex items-center gap-2">
           <Lightbulb className="h-4 w-4 text-warning animate-pulse" />
-          <span className="gradient-text">プロジェクト作成のヒント</span>
+          <span className="text-gray-900 dark:text-white">プロジェクト作成のヒント</span>
         </h3>
         <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-muted-foreground">
           <li className="flex items-start gap-2">

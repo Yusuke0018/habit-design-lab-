@@ -46,7 +46,7 @@ export const DashboardPage: React.FC = () => {
         </div>
         {projects && projects.length > 0 && (
           <div className="glass px-3 py-1.5 rounded-full">
-            <span className="text-xs sm:text-sm font-medium gradient-text">
+            <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
               {projects.length}件のプロジェクト
             </span>
           </div>
@@ -72,7 +72,7 @@ export const DashboardPage: React.FC = () => {
               </div>
             </div>
             
-            <h3 className="font-bold text-lg sm:text-2xl mb-3 gradient-text">
+            <h3 className="font-bold text-lg sm:text-2xl mb-3 text-gray-900 dark:text-white">
               習慣づくりの旅を始めよう！
             </h3>
             <p className="text-muted-foreground text-sm sm:text-base mb-6">
