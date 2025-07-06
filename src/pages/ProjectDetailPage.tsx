@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   Plus, 
@@ -15,13 +15,17 @@ import {
   Heart, 
   ArrowLeft,
   CheckCircle2,
-  History as HistoryIcon 
+  History as HistoryIcon,
+  Edit2,
+  Trash2,
+  Save,
+  X
 } from 'lucide-react';
 import { HabitElementCard } from '../components/HabitElementCard';
 import { FocusMapping } from '../components/FocusMapping';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
-import { getProject } from '../services/projects';
+import { getProject, updateProject, deleteProject } from '../services/projects';
 import { 
   getHabitElements, 
   createHabitElement, 
@@ -35,10 +39,14 @@ import type { HabitElement, MAPSet } from '../types';
 
 export const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isAddingElement, setIsAddingElement] = useState(false);
   const [newElementName, setNewElementName] = useState('');
   const [showMapping, setShowMapping] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editingProjectName, setEditingProjectName] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // プロジェクト情報を取得
   const { data: project, isLoading: projectLoading } = useQuery({
@@ -112,6 +120,24 @@ export const ProjectDetailPage: React.FC = () => {
     },
   });
 
+  // プロジェクト名更新
+  const updateProjectNameMutation = useMutation({
+    mutationFn: (newName: string) => updateProject(id!, { projectName: newName }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['project', id] });
+      setIsEditingName(false);
+    },
+  });
+
+  // プロジェクト削除
+  const deleteProjectMutation = useMutation({
+    mutationFn: () => deleteProject(id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      navigate('/dashboard');
+    },
+  });
+
   const handleAddElement = () => {
     if (newElementName.trim()) {
       createElementMutation.mutate({
@@ -121,6 +147,25 @@ export const ProjectDetailPage: React.FC = () => {
         mapSets: [],
       });
     }
+  };
+
+  const handleStartEditingName = () => {
+    if (project) {
+      setEditingProjectName(project.projectName);
+      setIsEditingName(true);
+    }
+  };
+
+  const handleSaveProjectName = () => {
+    if (editingProjectName.trim() && editingProjectName !== project?.projectName) {
+      updateProjectNameMutation.mutate(editingProjectName.trim());
+    } else {
+      setIsEditingName(false);
+    }
+  };
+
+  const handleDeleteProject = () => {
+    deleteProjectMutation.mutate();
   };
 
   if (projectLoading || elementsLoading) {
@@ -150,8 +195,53 @@ export const ProjectDetailPage: React.FC = () => {
         </Link>
         
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-3xl font-bold mb-2 text-red-600 dark:text-red-500 drop-shadow-md">{project.projectName}</h1>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              {isEditingName ? (
+                <>
+                  <input
+                    type="text"
+                    value={editingProjectName}
+                    onChange={(e) => setEditingProjectName(e.target.value)}
+                    className="text-xl sm:text-3xl font-bold px-2 py-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-red-600 dark:text-red-500"
+                    autoFocus
+                    onKeyPress={(e) => e.key === 'Enter' && handleSaveProjectName()}
+                  />
+                  <button
+                    onClick={handleSaveProjectName}
+                    className="p-1.5 glass-subtle hover:bg-primary/20 rounded-lg transition-all duration-300"
+                    title="保存"
+                  >
+                    <Save className="h-4 w-4 text-primary" />
+                  </button>
+                  <button
+                    onClick={() => setIsEditingName(false)}
+                    className="p-1.5 glass-subtle hover:bg-secondary/20 rounded-lg transition-all duration-300"
+                    title="キャンセル"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-xl sm:text-3xl font-bold text-red-600 dark:text-red-500 drop-shadow-md">{project.projectName}</h1>
+                  <button
+                    onClick={handleStartEditingName}
+                    className="p-1.5 glass-subtle hover:bg-primary/20 rounded-lg transition-all duration-300"
+                    title="プロジェクト名を編集"
+                  >
+                    <Edit2 className="h-4 w-4 text-primary" />
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="p-1.5 glass-subtle hover:bg-destructive/20 rounded-lg transition-all duration-300"
+                    title="プロジェクトを削除"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </button>
+                </>
+              )}
+            </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -312,6 +402,33 @@ export const ProjectDetailPage: React.FC = () => {
               <span>習慣要素を追加</span>
             </button>
           )}
+        </div>
+      )}
+
+      {/* 削除確認ダイアログ */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-md w-full shadow-2xl animate-fadeInUp">
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">プロジェクトを削除しますか？</h2>
+            <p className="text-muted-foreground mb-6">
+              「{project?.projectName}」とすべての習慣要素、履歴データが完全に削除されます。この操作は取り消せません。
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={handleDeleteProject}
+                disabled={deleteProjectMutation.isPending}
+                className="flex-1 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 disabled:opacity-50"
+              >
+                {deleteProjectMutation.isPending ? '削除中...' : '削除する'}
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80"
+              >
+                キャンセル
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

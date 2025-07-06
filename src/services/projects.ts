@@ -103,11 +103,47 @@ export const updateProject = async (
 };
 
 /**
- * プロジェクトを削除
+ * プロジェクトを削除（関連する習慣要素も含む）
  */
 export const deleteProject = async (projectId: string): Promise<void> => {
-  const projectRef = doc(db, COLLECTION_NAME, projectId);
-  await deleteDoc(projectRef);
+  try {
+    console.log('deleteProject: プロジェクト削除開始', projectId);
+    
+    // 1. 習慣要素を取得して削除
+    const habitElementsRef = collection(db, 'projects', projectId, 'habit_elements');
+    const habitElementsSnapshot = await getDocs(habitElementsRef);
+    
+    // 各習慣要素とそのMAPセットを削除
+    for (const elementDoc of habitElementsSnapshot.docs) {
+      // MAPセットを削除
+      const mapSetsRef = collection(db, 'projects', projectId, 'habit_elements', elementDoc.id, 'map_sets');
+      const mapSetsSnapshot = await getDocs(mapSetsRef);
+      
+      for (const mapSetDoc of mapSetsSnapshot.docs) {
+        await deleteDoc(mapSetDoc.ref);
+      }
+      
+      // 習慣要素を削除
+      await deleteDoc(elementDoc.ref);
+    }
+    
+    // 2. 履歴データを削除
+    const historyRef = collection(db, 'projects', projectId, 'history');
+    const historySnapshot = await getDocs(historyRef);
+    
+    for (const historyDoc of historySnapshot.docs) {
+      await deleteDoc(historyDoc.ref);
+    }
+    
+    // 3. プロジェクト自体を削除
+    const projectRef = doc(db, COLLECTION_NAME, projectId);
+    await deleteDoc(projectRef);
+    
+    console.log('deleteProject: プロジェクト削除完了', projectId);
+  } catch (error) {
+    console.error('deleteProject: エラー', error);
+    throw new Error('プロジェクトの削除中にエラーが発生しました');
+  }
 };
 
 /**
