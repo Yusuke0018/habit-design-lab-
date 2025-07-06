@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Simple Debug</title>
+</head>
+<body>
+  <h1>Firebase シンプルテスト</h1>
+  <div id="config-status"></div>
+  <div id="auth-status">認証状態: 未確認</div>
+  <button id="googleBtn">Googleでログイン</button>
+  <button id="testFirestore" disabled>Firestoreテスト</button>
+  <div id="result"></div>
+  <pre id="log"></pre>
+
+  <script type="module">
+    // ログ関数
+    const log = (message, data = null) => {
+      const logEl = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString();
+      logEl.textContent += `[${timestamp}] ${message}\n`;
+      if (data) {
+        logEl.textContent += JSON.stringify(data, null, 2) + '\n';
+      }
+      console.log(message, data);
+    };
+
+    try {
+      log('Firebase SDKをインポート中...');
+      
+      const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js');
+      const { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js');
+      const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js');
+
+      log('Firebase SDKインポート完了');
+
+      // Firebase設定
+      const firebaseConfig = {
+        apiKey: "AIzaSyDfy5pArjS3P_SEBE3DcB79oNnsD89Fta8",
+        authDomain: "habit-design-lab.firebaseapp.com",
+        projectId: "habit-design-lab",
+        storageBucket: "habit-design-lab.firebasestorage.app",
+        messagingSenderId: "253582894243",
+        appId: "1:253582894243:web:c3db9f4028bfbd4642cb16"
+      };
+
+      // 設定を表示
+      document.getElementById('config-status').innerHTML = `
+        <h3>Firebase設定:</h3>
+        <ul>
+          <li>Project ID: ${firebaseConfig.projectId}</li>
+          <li>Auth Domain: ${firebaseConfig.authDomain}</li>
+          <li>API Key: ${firebaseConfig.apiKey.substring(0, 10)}...</li>
+        </ul>
+      `;
+
+      log('Firebase初期化中...', firebaseConfig);
+      const app = initializeApp(firebaseConfig);
+      log('Firebase初期化完了');
+
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const provider = new GoogleAuthProvider();
+
+      // 認証状態の監視
+      onAuthStateChanged(auth, (user) => {
+        const authStatus = document.getElementById('auth-status');
+        if (user) {
+          authStatus.textContent = `認証済み: ${user.email} (${user.uid})`;
+          document.getElementById('testFirestore').disabled = false;
+          log('認証状態変更: ログイン済み', { email: user.email, uid: user.uid });
+        } else {
+          authStatus.textContent = '認証状態: 未ログイン';
+          document.getElementById('testFirestore').disabled = true;
+          log('認証状態変更: 未ログイン');
+        }
+      });
+
+      // Googleログイン
+      document.getElementById('googleBtn').addEventListener('click', async () => {
+        try {
+          log('Google認証開始...');
+          const result = await signInWithPopup(auth, provider);
+          log('Google認証成功', {
+            email: result.user.email,
+            uid: result.user.uid,
+            displayName: result.user.displayName
+          });
+        } catch (error) {
+          log('Google認証エラー', {
+            code: error.code,
+            message: error.message,
+            customData: error.customData
+          });
+          document.getElementById('result').textContent = `認証エラー: ${error.message}`;
+        }
+      });
+
+      // Firestoreテスト
+      document.getElementById('testFirestore').addEventListener('click', async () => {
+        try {
+          log('Firestore書き込み開始...');
+          
+          const testData = {
+            message: 'テストメッセージ',
+            timestamp: serverTimestamp(),
+            userId: auth.currentUser?.uid,
+            email: auth.currentUser?.email,
+            createdAt: new Date().toISOString()
+          };
+          
+          log('書き込みデータ:', testData);
+          
+          const docRef = await addDoc(collection(db, 'test'), testData);
+          
+          log('Firestore書き込み成功', { docId: docRef.id });
+          document.getElementById('result').innerHTML = `
+            <div style="color: green;">
+              書き込み成功！<br>
+              Document ID: ${docRef.id}<br>
+              コレクション: test
+            </div>
+          `;
+        } catch (error) {
+          log('Firestoreエラー', {
+            code: error.code,
+            message: error.message,
+            stack: error.stack
+          });
+          document.getElementById('result').innerHTML = `
+            <div style="color: red;">
+              Firestoreエラー: ${error.message}<br>
+              エラーコード: ${error.code}
+            </div>
+          `;
+        }
+      });
+
+    } catch (error) {
+      log('初期化エラー', error);
+      document.getElementById('result').textContent = `初期化エラー: ${error.message}`;
+    }
+  </script>
+</body>
+</html>
