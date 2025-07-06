@@ -90,7 +90,7 @@ export const ProjectCreatePage: React.FC = () => {
         <div className="relative z-10">
           <label htmlFor="projectName" className="block text-sm font-medium mb-2 flex items-center gap-2">
             <Target className="h-4 w-4 text-primary" />
-            <span className="gradient-text">プロジェクト名</span>
+            <span className="text-red-600 dark:text-red-500 font-semibold">プロジェクト名</span>
             <span className="text-destructive">*</span>
           </label>
           <div className="relative group">

@@ -48,7 +48,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
                 <Sparkles className="h-4 w-4 text-primary animate-spin-slow" />
                 <div className="absolute inset-0 bg-primary/50 blur-xl animate-pulse-glow" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 line-clamp-1">{project.projectName}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-red-600 dark:text-red-500 line-clamp-1 drop-shadow-md">{project.projectName}</h3>
             </div>
             {isOverdue ? (
               <div className="relative">

@@ -151,7 +151,7 @@ export const ProjectDetailPage: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-3xl font-bold mb-2">{project.projectName}</h1>
+            <h1 className="text-xl sm:text-3xl font-bold mb-2 text-red-600 dark:text-red-500 drop-shadow-md">{project.projectName}</h1>
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
