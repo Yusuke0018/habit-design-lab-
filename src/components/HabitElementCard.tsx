@@ -65,7 +65,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                 type="text"
                 value={editingName}
                 onChange={(e) => setEditingName(e.target.value)}
-                className="flex-1 px-2 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="flex-1 px-2 py-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
                 autoFocus
                 onKeyPress={(e) => e.key === 'Enter' && handleSaveName()}
               />
@@ -196,33 +196,33 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                     type="text"
                     value={newMAPSet.M}
                     onChange={(e) => setNewMAPSet({ ...newMAPSet, M: e.target.value })}
-                    className="w-full px-3 py-2 glass border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
+                    className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 text-gray-900 dark:text-white"
                     placeholder="なぜこの行動をしたいのか？"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1 flex items-center gap-2">
                     <Brain className="h-3 w-3 text-success" />
-                    <span className="gradient-text">A (能力)</span>
+                    <span className="text-gray-900 dark:text-gray-100">A (能力)</span>
                   </label>
                   <input
                     type="text"
                     value={newMAPSet.A}
                     onChange={(e) => setNewMAPSet({ ...newMAPSet, A: e.target.value })}
-                    className="w-full px-3 py-2 glass border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
+                    className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 text-gray-900 dark:text-white"
                     placeholder="どうすれば簡単にできるか？"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1 flex items-center gap-2">
                     <MapPin className="h-3 w-3 text-info" />
-                    <span className="gradient-text">P (きっかけ)</span>
+                    <span className="text-gray-900 dark:text-gray-100">P (きっかけ)</span>
                   </label>
                   <input
                     type="text"
                     value={newMAPSet.P}
                     onChange={(e) => setNewMAPSet({ ...newMAPSet, P: e.target.value })}
-                    className="w-full px-3 py-2 glass border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
+                    className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 text-gray-900 dark:text-white"
                     placeholder="いつ・どこで・何をきっかけに？"
                   />
                 </div>
@@ -250,7 +250,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                 className="w-full flex items-center justify-center gap-2 py-3 glass border-2 border-dashed border-primary/30 rounded-xl hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 group"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:rotate-90 transition-transform duration-300 text-primary" />
-                <span className="text-xs sm:text-sm font-medium gradient-text">B=MAPセットを追加</span>
+                <span className="text-xs sm:text-sm font-medium text-primary">B=MAPセットを追加</span>
               </button>
             )}
           </div>
@@ -282,7 +282,7 @@ const MAPSetEditForm: React.FC<{
           type="text"
           value={editingMAPSet.M}
           onChange={(e) => setEditingMAPSet({ ...editingMAPSet, M: e.target.value })}
-          className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
         />
       </div>
       <div>
@@ -291,7 +291,7 @@ const MAPSetEditForm: React.FC<{
           type="text"
           value={editingMAPSet.A}
           onChange={(e) => setEditingMAPSet({ ...editingMAPSet, A: e.target.value })}
-          className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
         />
       </div>
       <div>
@@ -300,7 +300,7 @@ const MAPSetEditForm: React.FC<{
           type="text"
           value={editingMAPSet.P}
           onChange={(e) => setEditingMAPSet({ ...editingMAPSet, P: e.target.value })}
-          className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
         />
       </div>
       <div className="flex justify-end gap-2">

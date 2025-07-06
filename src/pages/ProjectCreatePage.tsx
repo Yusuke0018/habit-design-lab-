@@ -102,7 +102,7 @@ export const ProjectCreatePage: React.FC = () => {
               type="text"
               value={formData.projectName}
               onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 group-hover:border-primary/50"
+              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 text-gray-900 dark:text-white"
               placeholder="例：家庭円満プロジェクト"
               required
             />
@@ -123,7 +123,7 @@ export const ProjectCreatePage: React.FC = () => {
             id="aspiration"
             value={formData.aspiration}
             onChange={(e) => setFormData({ ...formData, aspiration: e.target.value })}
-            className="w-full px-4 py-3 glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning min-h-[100px] transition-all duration-300"
+            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning min-h-[100px] transition-all duration-300 text-gray-900 dark:text-white"
             placeholder="例：妻が笑顔でいる時間を増やし、子供の成長を穏やかな気持ちで見守る"
             required
           />
@@ -148,7 +148,7 @@ export const ProjectCreatePage: React.FC = () => {
               type="text"
               value={formData.feeling}
               onChange={(e) => setFormData({ ...formData, feeling: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300 group-hover:border-accent/50"
+              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300 text-gray-900 dark:text-white"
               placeholder="例：穏やかさ、家族との一体感"
               required
             />
@@ -175,7 +175,7 @@ export const ProjectCreatePage: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, nextCheckDate: new Date(e.target.value) })}
               min={formatDateForInput(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000))} // 最短3日後
               max={formatDateForInput(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))} // 最長30日後
-              className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-info focus:border-info transition-all duration-300 group-hover:border-info/50"
+              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-info focus:border-info transition-all duration-300 text-gray-900 dark:text-white"
               required
             />
           </div>

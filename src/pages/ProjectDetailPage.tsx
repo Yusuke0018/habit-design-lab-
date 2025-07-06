@@ -281,7 +281,7 @@ export const ProjectDetailPage: React.FC = () => {
                   value={newElementName}
                   onChange={(e) => setNewElementName(e.target.value)}
                   placeholder="習慣要素の名前を入力（例：朝早く起きて子供の世話をする）"
-                  className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
                   autoFocus
                   onKeyPress={(e) => e.key === 'Enter' && handleAddElement()}
                 />
