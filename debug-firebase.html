@@ -33,32 +33,46 @@
     const testBtn = document.getElementById('testBtn');
     const resultEl = document.getElementById('result');
 
-    // 匿名認証
-    signInAnonymously(auth)
-      .then((userCredential) => {
-        statusEl.textContent = '認証成功: ' + userCredential.user.uid;
-        testBtn.disabled = false;
-      })
-      .catch((error) => {
-        statusEl.textContent = '認証エラー: ' + error.message;
-        console.error('Auth error:', error);
-      });
-
-    // テスト書き込み
+    // Google認証をテスト（匿名認証の代わり）
+    import { signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+    
+    const provider = new GoogleAuthProvider();
+    
+    // 自動ログイン試行をスキップして、ボタンクリックで認証
+    statusEl.textContent = 'Googleでログインしてください';
+    testBtn.textContent = 'Googleでログイン';
+    testBtn.disabled = false;
+    
+    let isAuthenticated = false;
+    
     testBtn.addEventListener('click', async () => {
-      try {
-        resultEl.textContent = '書き込み中...';
-        
-        const docRef = await addDoc(collection(db, 'test'), {
-          message: 'テストメッセージ',
-          timestamp: serverTimestamp(),
-          userId: auth.currentUser?.uid
-        });
-        
-        resultEl.textContent = '書き込み成功: ' + docRef.id;
-      } catch (error) {
-        resultEl.textContent = '書き込みエラー: ' + error.message;
-        console.error('Firestore error:', error);
+      if (!isAuthenticated) {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          statusEl.textContent = '認証成功: ' + result.user.email;
+          testBtn.textContent = 'Firestoreテスト書き込み';
+          isAuthenticated = true;
+        } catch (error) {
+          statusEl.textContent = '認証エラー: ' + error.message;
+          console.error('Auth error:', error);
+        }
+      } else {
+        // Firestoreへの書き込みテスト
+        try {
+          resultEl.textContent = '書き込み中...';
+          
+          const docRef = await addDoc(collection(db, 'test'), {
+            message: 'テストメッセージ',
+            timestamp: serverTimestamp(),
+            userId: auth.currentUser?.uid,
+            email: auth.currentUser?.email
+          });
+          
+          resultEl.textContent = '書き込み成功: ' + docRef.id;
+        } catch (error) {
+          resultEl.textContent = '書き込みエラー: ' + error.message;
+          console.error('Firestore error:', error);
+        }
       }
     });
   </script>

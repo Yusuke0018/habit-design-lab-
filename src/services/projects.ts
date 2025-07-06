@@ -114,21 +114,53 @@ export const deleteProject = async (projectId: string): Promise<void> => {
  * プロジェクトを取得
  */
 export const getProject = async (projectId: string): Promise<Project | null> => {
-  const projectRef = doc(db, COLLECTION_NAME, projectId);
-  const projectSnap = await getDoc(projectRef);
+  try {
+    console.log('getProject: プロジェクト取得中...', projectId);
+    
+    const projectRef = doc(db, COLLECTION_NAME, projectId);
+    const projectSnap = await getDoc(projectRef);
 
-  if (!projectSnap.exists()) {
-    return null;
+    if (!projectSnap.exists()) {
+      console.log('getProject: プロジェクトが見つかりません', projectId);
+      return null;
+    }
+
+    const data = projectSnap.data();
+    console.log('getProject: データ取得', data);
+    
+    // Timestampの安全な変換
+    const nextCheckDate = data.nextCheckDate?.toDate 
+      ? data.nextCheckDate.toDate() 
+      : data.nextCheckDate instanceof Date 
+        ? data.nextCheckDate 
+        : new Date();
+        
+    const createdAt = data.createdAt?.toDate 
+      ? data.createdAt.toDate() 
+      : data.createdAt instanceof Date 
+        ? data.createdAt 
+        : new Date();
+        
+    const updatedAt = data.updatedAt?.toDate 
+      ? data.updatedAt.toDate() 
+      : data.updatedAt instanceof Date 
+        ? data.updatedAt 
+        : new Date();
+
+    return {
+      id: projectSnap.id,
+      projectName: data.projectName || '',
+      aspiration: data.aspiration || '',
+      feeling: data.feeling || '',
+      ownerUid: data.ownerUid || '',
+      nextCheckDate,
+      createdAt,
+      updatedAt,
+    };
+  } catch (error) {
+    console.error('getProject: エラー', error);
+    throw error;
   }
-
-  const data = projectSnap.data();
-  return {
-    id: projectSnap.id,
-    ...data,
-    nextCheckDate: data.nextCheckDate.toDate(),
-    createdAt: data.createdAt.toDate(),
-    updatedAt: data.updatedAt?.toDate(),
-  } as Project;
 };
 
 /**
@@ -138,27 +170,63 @@ export const getUserProjects = async (): Promise<Project[]> => {
   const user = getCurrentUser();
   if (!user) throw new Error('User not authenticated');
 
-  const q = query(
-    collection(db, COLLECTION_NAME),
-    where('ownerUid', '==', user.uid),
-    orderBy('createdAt', 'desc')
-  );
+  try {
+    console.log('getUserProjects: ユーザーのプロジェクトを取得中...', user.uid);
+    
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where('ownerUid', '==', user.uid),
+      orderBy('createdAt', 'desc')
+    );
 
-  const querySnapshot = await getDocs(q);
-  const projects: Project[] = [];
+    const querySnapshot = await getDocs(q);
+    const projects: Project[] = [];
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    projects.push({
-      id: doc.id,
-      ...data,
-      nextCheckDate: data.nextCheckDate.toDate(),
-      createdAt: data.createdAt.toDate(),
-      updatedAt: data.updatedAt?.toDate(),
-    } as Project);
-  });
+    querySnapshot.forEach((doc) => {
+      try {
+        const data = doc.data();
+        console.log(`プロジェクトデータ (${doc.id}):`, data);
+        
+        // Timestampの安全な変換
+        const nextCheckDate = data.nextCheckDate?.toDate 
+          ? data.nextCheckDate.toDate() 
+          : data.nextCheckDate instanceof Date 
+            ? data.nextCheckDate 
+            : new Date();
+            
+        const createdAt = data.createdAt?.toDate 
+          ? data.createdAt.toDate() 
+          : data.createdAt instanceof Date 
+            ? data.createdAt 
+            : new Date();
+            
+        const updatedAt = data.updatedAt?.toDate 
+          ? data.updatedAt.toDate() 
+          : data.updatedAt instanceof Date 
+            ? data.updatedAt 
+            : new Date();
+        
+        projects.push({
+          id: doc.id,
+          projectName: data.projectName || '',
+          aspiration: data.aspiration || '',
+          feeling: data.feeling || '',
+          ownerUid: data.ownerUid || user.uid,
+          nextCheckDate,
+          createdAt,
+          updatedAt,
+        });
+      } catch (error) {
+        console.error(`プロジェクト ${doc.id} の処理中にエラー:`, error);
+      }
+    });
 
-  return projects;
+    console.log('getUserProjects: 取得完了', projects.length, 'プロジェクト');
+    return projects;
+  } catch (error) {
+    console.error('getUserProjects: エラー', error);
+    throw error;
+  }
 };
 
 /**
@@ -184,9 +252,9 @@ export const getProjectsNeedingCheck = async (): Promise<Project[]> => {
     projects.push({
       id: doc.id,
       ...data,
-      nextCheckDate: data.nextCheckDate.toDate(),
-      createdAt: data.createdAt.toDate(),
-      updatedAt: data.updatedAt?.toDate(),
+      nextCheckDate: data.nextCheckDate?.toDate ? data.nextCheckDate.toDate() : new Date(),
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(),
+      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date(),
     } as Project);
   });
 
