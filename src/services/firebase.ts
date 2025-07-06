@@ -21,8 +21,22 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Firebase設定のデバッグ
+console.log('Firebase Config Check:', {
+  apiKey: firebaseConfig.apiKey ? 'SET' : 'NOT SET',
+  authDomain: firebaseConfig.authDomain || 'NOT SET',
+  projectId: firebaseConfig.projectId || 'NOT SET',
+});
+
 // Firebaseアプリの初期化
-const app = initializeApp(firebaseConfig);
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+  throw error;
+}
 
 // Firebase サービスのエクスポート
 export const auth = getAuth(app);

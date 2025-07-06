@@ -35,7 +35,7 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Router basename="/habit-design-lab-">
+          <Router basename={import.meta.env.BASE_URL}>
             <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
