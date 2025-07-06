@@ -46,20 +46,22 @@ export const DashboardPage: React.FC = () => {
           </div>
           <h2 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">プロジェクト一覧</h2>
         </div>
-        <button
-          onClick={() => setShowAiSettings(true)}
-          className="p-2 glass-subtle hover:bg-primary/20 rounded-lg transition-all duration-300"
-          title="AI設定"
-        >
-          <Settings className="h-5 w-5 text-primary" />
-        </button>
-        {projects && projects.length > 0 && (
-          <div className="glass px-3 py-1.5 rounded-full">
-            <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
-              {projects.length}件のプロジェクト
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {projects && projects.length > 0 && (
+            <div className="glass px-3 py-1.5 rounded-full">
+              <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                {projects.length}件のプロジェクト
+              </span>
+            </div>
+          )}
+          <button
+            onClick={() => setShowAiSettings(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            title="AI設定"
+          >
+            <Settings className="h-4 w-4" />
+            <span className="text-sm font-medium">AI設定</span>
+          </button>
       </div>
       
       {projects && projects.length > 0 ? (

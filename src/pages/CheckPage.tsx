@@ -321,24 +321,26 @@ export const CheckPage: React.FC = () => {
             )}
 
             {/* AIアドバイス */}
-            {(reflection.well || reflection.challenge || reflection.next || reflection.freeText) && (
-              <div className="glass rounded-2xl border-2 border-purple-500/30 p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="flex items-center gap-2 text-base sm:text-lg font-semibold">
-                    <Brain className="h-5 w-5 text-purple-500" />
-                    <span className="text-gray-900 dark:text-white">AIアドバイス</span>
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={() => setShowAiSettings(true)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                    title="APIキー設定"
-                  >
-                    <Settings className="h-4 w-4" />
-                  </button>
-                </div>
+            <div className="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl border-2 border-purple-500/50 p-4 sm:p-6 shadow-xl">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="flex items-center gap-2 text-base sm:text-lg font-bold">
+                  <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
+                  <span className="text-gray-900 dark:text-white">AIアドバイス機能</span>
+                  <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">NEW</span>
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowAiSettings(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                  title="APIキー設定"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>API設定</span>
+                </button>
+              </div>
 
-                {aiAdvice ? (
+              {(reflection.well || reflection.challenge || reflection.next || reflection.freeText) ? (
+                aiAdvice ? (
                   <AIAdviceDisplay advice={aiAdvice} isLoading={isAiLoading} />
                 ) : (
                   <div className="text-center py-8">
@@ -346,27 +348,35 @@ export const CheckPage: React.FC = () => {
                       type="button"
                       onClick={generateAIAdvice}
                       disabled={isAiLoading}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-purple-600 text-white rounded-full hover:bg-purple-700 disabled:opacity-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-base font-semibold"
                     >
                       {isAiLoading ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          分析中...
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          AIが分析中...
                         </>
                       ) : (
                         <>
-                          <Brain className="h-4 w-4" />
+                          <Brain className="h-5 w-5" />
                           AIアドバイスを生成
+                          <Sparkles className="h-5 w-5" />
                         </>
                       )}
                     </button>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      振り返り内容を分析して、AIがアドバイスを提供します
+                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                      振り返り内容をAIが分析し、あなたに最適なアドバイスを提供します
                     </p>
                   </div>
-                )}
-              </div>
-            )}
+                )
+              ) : (
+                <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+                  <Brain className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                  <p className="text-sm">
+                    振り返り内容を入力すると、AIアドバイスが利用できます
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* ボタン */}
             <div className="flex flex-col sm:flex-row gap-3">
