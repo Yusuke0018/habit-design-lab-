@@ -86,7 +86,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
               </button>
             </div>
           ) : (
-            <h3 className="font-bold text-base sm:text-lg flex-1 line-clamp-1 gradient-text">{element.elementName}</h3>
+            <h3 className="font-bold text-base sm:text-lg flex-1 line-clamp-1 text-gray-900 dark:text-gray-100">{element.elementName}</h3>
           )}
         </div>
 
@@ -140,7 +140,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                           <div className="absolute inset-0 bg-warning/50 blur-lg" />
                         </div>
                         <div className="flex-1">
-                          <span className="font-medium gradient-text">M (動機):</span>
+                          <span className="font-medium text-gray-900 dark:text-gray-100">M (動機):</span>
                           <span className="ml-2 text-muted-foreground">{mapSet.M}</span>
                         </div>
                       </div>
@@ -150,7 +150,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                           <div className="absolute inset-0 bg-success/50 blur-lg" />
                         </div>
                         <div className="flex-1">
-                          <span className="font-medium gradient-text">A (能力):</span>
+                          <span className="font-medium text-gray-900 dark:text-gray-100">A (能力):</span>
                           <span className="ml-2 text-muted-foreground">{mapSet.A}</span>
                         </div>
                       </div>
@@ -160,7 +160,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                           <div className="absolute inset-0 bg-info/50 blur-lg" />
                         </div>
                         <div className="flex-1">
-                          <span className="font-medium gradient-text">P (きっかけ):</span>
+                          <span className="font-medium text-gray-900 dark:text-gray-100">P (きっかけ):</span>
                           <span className="ml-2 text-muted-foreground">{mapSet.P}</span>
                         </div>
                       </div>
@@ -190,7 +190,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                 <div>
                   <label className="block text-sm font-medium mb-1 flex items-center gap-2">
                     <Zap className="h-3 w-3 text-warning" />
-                    <span className="gradient-text">M (動機)</span>
+                    <span className="text-gray-900 dark:text-gray-100">M (動機)</span>
                   </label>
                   <input
                     type="text"
@@ -229,7 +229,7 @@ export const HabitElementCard: React.FC<HabitElementCardProps> = ({
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={handleAddMAPSet}
-                    className="px-3 py-1.5 gradient-primary text-white rounded-lg text-sm hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg btn-glow"
+                    className="px-3 py-1.5 btn-primary text-white rounded-lg text-sm hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg btn-glow"
                   >
                     追加
                   </button>

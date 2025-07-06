@@ -81,7 +81,7 @@ export const DashboardPage: React.FC = () => {
             
             <Link
               to="/projects/new"
-              className="inline-flex items-center gap-3 gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl btn-glow"
+              className="inline-flex items-center gap-3 btn-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl btn-glow"
             >
               <Plus className="h-5 w-5 animate-spin-slow" />
               <span>プロジェクトを作成</span>
@@ -95,11 +95,11 @@ export const DashboardPage: React.FC = () => {
       {projects && projects.length > 0 && (
         <Link
           to="/projects/new"
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 gradient-primary text-white rounded-full p-3 sm:p-4 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 group animate-bounce-slow"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 btn-primary text-white rounded-full p-3 sm:p-4 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 group animate-bounce-slow"
           title="新規プロジェクト作成"
         >
           <Plus className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300" />
-          <div className="absolute inset-0 gradient-primary rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity" />
+          <div className="absolute inset-0 btn-primary rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity" />
         </Link>
       )}
     </div>

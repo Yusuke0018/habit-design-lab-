@@ -199,7 +199,7 @@ export const ProjectCreatePage: React.FC = () => {
           <button
             type="submit"
             disabled={createMutation.isPending}
-            className="flex-1 gradient-primary text-white py-3 sm:py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base font-medium btn-glow"
+            className="flex-1 btn-primary text-white py-3 sm:py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base font-medium btn-glow"
           >
             {createMutation.isPending ? (
               <>
