@@ -12,13 +12,15 @@ import { getStorage } from 'firebase/storage';
 import { getFunctions } from 'firebase/functions';
 
 // Firebase設定
+// 注意: 本番環境では環境変数が使えないため、直接設定を記述
+// これらは公開APIキーなので、Firebaseのセキュリティルールで保護されています
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDfy5pArjS3P_SEBE3DcB79oNnsD89Fta8",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "habit-design-lab.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "habit-design-lab",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "habit-design-lab.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "253582894243",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:253582894243:web:c3db9f4028bfbd4642cb16",
 };
 
 // Firebase設定のデバッグ
