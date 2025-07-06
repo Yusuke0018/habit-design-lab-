@@ -36,5 +36,6 @@ export const useToast = () => {
     toast,
     showToast,
     hideToast,
+    addToast: showToast, // エイリアスとして追加
   };
 };

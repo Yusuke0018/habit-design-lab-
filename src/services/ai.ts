@@ -127,7 +127,7 @@ class AIService {
 
     const habitInfo = habitElements.map(element => {
       const mapSets = element.mapSets.map(set => 
-        `- 動機(M): ${set.motivation}, 能力(A): ${set.ability}, きっかけ(P): ${set.prompt}`
+        `- 動機(M): ${set.M}, 能力(A): ${set.A}, きっかけ(P): ${set.P}`
       ).join('\n');
       
       return `

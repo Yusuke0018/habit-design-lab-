@@ -62,6 +62,7 @@ export const DashboardPage: React.FC = () => {
             <Settings className="h-4 w-4" />
             <span className="text-sm font-medium">AI設定</span>
           </button>
+        </div>
       </div>
       
       {projects && projects.length > 0 ? (

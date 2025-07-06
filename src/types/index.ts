@@ -61,3 +61,12 @@ export interface History {
     habitElements: HabitElement[];
   };
 }
+
+// チェック履歴の型（AI分析用）
+export interface CheckHistory {
+  wellDone: string;
+  difficult: string;
+  nextTry: string;
+  freeText?: string;
+  checkedAt: string;
+}
