@@ -13,6 +13,12 @@ export default {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'bounce-slow': 'bounce 2s infinite',
         'blob': 'blob 7s infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'success-bounce': 'successBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        'confetti': 'confetti 3s ease-out forwards',
+        'shimmer': 'shimmer 3s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         fadeInUp: {
@@ -52,6 +58,16 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-primary': 'var(--primary-gradient)',
+        'gradient-mesh': 'radial-gradient(at 20% 80%, hsl(var(--gradient-start) / 0.3) 0px, transparent 50%), radial-gradient(at 80% 20%, hsl(var(--gradient-middle) / 0.3) 0px, transparent 50%), radial-gradient(at 40% 40%, hsl(var(--gradient-end) / 0.3) 0px, transparent 50%)',
+      },
+      colors: {
+        'gradient-start': 'hsl(var(--gradient-start) / <alpha-value>)',
+        'gradient-middle': 'hsl(var(--gradient-middle) / <alpha-value>)',
+        'gradient-end': 'hsl(var(--gradient-end) / <alpha-value>)',
+        'success': 'hsl(var(--success) / <alpha-value>)',
+        'warning': 'hsl(var(--warning) / <alpha-value>)',
+        'info': 'hsl(var(--info) / <alpha-value>)',
       },
     },
   },

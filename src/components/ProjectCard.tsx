@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
+import { Calendar, AlertCircle, CheckCircle, Sparkles, Target, TrendingUp } from 'lucide-react';
 import type { Project } from '../types';
 import { AnimatedCard } from './AnimatedCard';
 
@@ -34,42 +34,73 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay = 0 }) 
     <AnimatedCard delay={delay}>
       <Link
         to={`/projects/${project.id}`}
-        className="block bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border rounded-xl p-4 sm:p-6 hover:border-primary/50 transition-all duration-300 relative overflow-hidden group"
+        className="block glass border-2 border-white/20 hover:border-primary/50 rounded-2xl p-4 sm:p-6 transition-all duration-300 relative overflow-hidden group card-3d"
       >
         {/* 背景装飾 */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gradient-start/10 via-gradient-middle/10 to-gradient-end/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 animate-pulse-slow" />
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 animate-pulse-slow animation-delay-2000" />
+        
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary animate-pulse-slow" />
-              <h3 className="text-base sm:text-lg font-semibold text-foreground line-clamp-1">{project.projectName}</h3>
+              <div className="relative">
+                <Sparkles className="h-4 w-4 text-primary animate-spin-slow" />
+                <div className="absolute inset-0 bg-primary/50 blur-xl animate-pulse-glow" />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold gradient-text line-clamp-1">{project.projectName}</h3>
             </div>
             {isOverdue ? (
-              <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 animate-bounce-slow" />
+              <div className="relative">
+                <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 animate-bounce" />
+                <div className="absolute inset-0 bg-destructive/50 blur-xl animate-pulse" />
+              </div>
             ) : daysUntilCheck <= 3 ? (
-              <Calendar className="h-5 w-5 text-yellow-500 flex-shrink-0" />
+              <div className="relative">
+                <Calendar className="h-5 w-5 text-warning flex-shrink-0 animate-pulse" />
+                <div className="absolute inset-0 bg-warning/50 blur-xl" />
+              </div>
             ) : (
-              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="relative">
+                <CheckCircle className="h-5 w-5 text-success flex-shrink-0" />
+                <div className="absolute inset-0 bg-success/50 blur-xl" />
+              </div>
             )}
           </div>
 
-      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
-        {project.aspiration}
-      </p>
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <Target className="h-3 w-3 sm:h-4 sm:w-4 text-accent" />
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 italic">
+              "{project.aspiration}"
+            </p>
+          </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs sm:text-sm">
-        <span className="text-muted-foreground">次回チェック日</span>
-        <span className={`font-medium ${isOverdue ? 'text-destructive' : 'text-foreground'}`}>
-          {isOverdue && '期限超過: '}
-          {formatDate(checkDate)}
-        </span>
-      </div>
-
-          {!isOverdue && daysUntilCheck <= 7 && (
-            <div className="mt-2 sm:mt-3 text-xs text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 px-2 sm:px-3 py-1 rounded-md">
-              あと{daysUntilCheck}日でチェック
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 bg-gradient-to-r from-white/50 to-white/30 dark:from-gray-800/50 dark:to-gray-800/30 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs sm:text-sm text-muted-foreground">次回チェック</span>
+              </div>
+              <span className={`font-bold text-sm ${isOverdue ? 'text-destructive animate-pulse' : 'gradient-text'}`}>
+                {isOverdue && '⚠️ '}
+                {formatDate(checkDate)}
+              </span>
             </div>
-          )}
+
+            {!isOverdue && daysUntilCheck <= 7 && (
+              <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-warning/20 to-warning/10 text-warning px-3 py-2 rounded-lg animate-pulse-slow">
+                <TrendingUp className="h-3 w-3" />
+                <span className="font-medium">あと{daysUntilCheck}日でチェック！</span>
+              </div>
+            )}
+            
+            {isOverdue && (
+              <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-destructive/20 to-destructive/10 text-destructive px-3 py-2 rounded-lg animate-pulse">
+                <AlertCircle className="h-3 w-3" />
+                <span className="font-medium">チェックが必要です</span>
+              </div>
+            )}
+          </div>
         </div>
       </Link>
     </AnimatedCard>

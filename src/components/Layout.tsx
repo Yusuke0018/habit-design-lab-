@@ -19,14 +19,25 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* 背景のグラデーションメッシュ */}
+      <div className="fixed inset-0 bg-gradient-mesh opacity-30 pointer-events-none" />
+      
+      {/* アニメーションするブロブ */}
+      <div className="fixed top-20 -left-20 w-96 h-96 bg-gradient-to-br from-gradient-start/20 to-gradient-middle/20 rounded-full blur-3xl animate-blob" />
+      <div className="fixed bottom-20 -right-20 w-96 h-96 bg-gradient-to-br from-gradient-middle/20 to-gradient-end/20 rounded-full blur-3xl animate-blob animation-delay-2000" />
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-gradient-end/20 to-gradient-start/20 rounded-full blur-3xl animate-blob animation-delay-4000" />
+      
       {/* ヘッダー */}
-      <header className="bg-card border-b">
+      <header className="glass sticky top-0 z-50 border-b border-white/10">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <Link to="/dashboard" className="flex items-center space-x-1 sm:space-x-2">
-              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              <h1 className="text-base sm:text-xl font-bold">習慣デザイン・ラボ</h1>
+            <Link to="/dashboard" className="flex items-center space-x-1 sm:space-x-2 group">
+              <div className="relative">
+                <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary animate-float" />
+                <div className="absolute inset-0 bg-primary/50 blur-xl group-hover:blur-2xl transition-all duration-300" />
+              </div>
+              <h1 className="text-base sm:text-xl font-bold gradient-text">習慣デザイン・ラボ</h1>
             </Link>
             
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -42,10 +53,10 @@ export const Layout: React.FC = () => {
               </span>
               <button
                 onClick={signOut}
-                className="p-1.5 sm:p-2 hover:bg-accent rounded-md transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-accent/20 rounded-lg transition-all duration-300 glass-subtle group"
                 title="ログアウト"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
               </button>
             </div>
           </div>
@@ -53,38 +64,44 @@ export const Layout: React.FC = () => {
       </header>
 
       {/* ナビゲーション */}
-      <nav className="bg-card border-b overflow-x-auto">
+      <nav className="glass-subtle border-b border-white/10 overflow-x-auto sticky top-[60px] sm:top-[68px] z-40">
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex space-x-1 min-w-max">
             <Link
               to="/dashboard"
-              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap relative group ${
                 isActive('/dashboard')
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span>ダッシュボード</span>
+              {isActive('/dashboard') && (
+                <div className="absolute inset-0 bg-gradient-primary opacity-10 rounded-t-lg" />
+              )}
+              <Home className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isActive('/dashboard') ? 'animate-bounce-slow' : 'group-hover:scale-110'} transition-transform`} />
+              <span className="relative">ダッシュボード</span>
             </Link>
             
             <Link
               to="/projects/new"
-              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 flex items-center space-x-1 sm:space-x-2 border-b-2 whitespace-nowrap relative group ${
                 isActive('/projects/new')
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span>新規プロジェクト</span>
+              {isActive('/projects/new') && (
+                <div className="absolute inset-0 bg-gradient-primary opacity-10 rounded-t-lg" />
+              )}
+              <Plus className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isActive('/projects/new') ? 'animate-spin-slow' : 'group-hover:rotate-90'} transition-transform`} />
+              <span className="relative">新規プロジェクト</span>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* メインコンテンツ */}
-      <main className="container mx-auto px-4 py-4 sm:py-8">
+      <main className="container mx-auto px-4 py-4 sm:py-8 relative z-10">
         <Outlet />
       </main>
     </div>

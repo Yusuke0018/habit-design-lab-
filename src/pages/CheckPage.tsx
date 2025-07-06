@@ -14,9 +14,11 @@ import {
   CheckCircle, 
   XCircle, 
   TrendingUp,
-  MessageSquare,
   Save,
-  Loader2
+  Loader2,
+  Sparkles,
+  Target,
+  Lightbulb
 } from 'lucide-react';
 import { getProject, updateProject } from '../services/projects';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -107,18 +109,24 @@ export const CheckPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto animate-fadeInUp">
       {/* ヘッダー */}
       <div className="mb-4 sm:mb-6">
         <Link
           to={`/projects/${id}`}
-          className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4"
+          className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4 group"
         >
-          <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
+          <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 group-hover:-translate-x-1 transition-transform" />
           プロジェクトに戻る
         </Link>
         
-        <h1 className="text-xl sm:text-3xl font-bold mb-2">振り返り</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="relative">
+            <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-primary animate-float" />
+            <div className="absolute inset-0 bg-primary/50 blur-2xl" />
+          </div>
+          <h1 className="text-xl sm:text-3xl font-bold gradient-text">振り返りタイム</h1>
+        </div>
         <p className="text-sm sm:text-base text-muted-foreground">
           プロジェクト「{project.projectName}」の進捗を振り返りましょう
         </p>
@@ -127,17 +135,24 @@ export const CheckPage: React.FC = () => {
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         {/* 現在のデザイン（参考） */}
         <div className="lg:col-span-1 order-2 lg:order-1">
-          <div className="bg-card border rounded-lg p-3 sm:p-4 lg:sticky lg:top-4">
+          <div className="glass rounded-2xl border-2 border-white/20 p-3 sm:p-4 lg:sticky lg:top-4">
             <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
-              <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              現在の習慣要素
+              <div className="relative">
+                <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                <div className="absolute inset-0 bg-primary/50 blur-lg" />
+              </div>
+              <span className="gradient-text">現在の習慣要素</span>
             </h3>
             
             {habitElements && habitElements.length > 0 ? (
               <div className="space-y-2">
-                {habitElements.map((element) => (
-                  <div key={element.id} className="p-2 bg-muted/30 rounded-md">
-                    <p className="text-xs sm:text-sm font-medium">{element.elementName}</p>
+                {habitElements.map((element, index) => (
+                  <div 
+                    key={element.id} 
+                    className="p-2 glass-subtle rounded-lg animate-fadeInUp"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <p className="text-xs sm:text-sm font-medium gradient-text">{element.elementName}</p>
                     <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1">
                       {element.mapSets.length}個のB=MAPセット
                     </p>
@@ -165,66 +180,81 @@ export const CheckPage: React.FC = () => {
         <div className="lg:col-span-2 order-1 lg:order-2">
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* うまくいった点 */}
-            <div className="bg-card border rounded-lg p-4 sm:p-6">
+            <div className="glass rounded-2xl border-2 border-success/30 p-4 sm:p-6 hover:border-success/50 transition-all duration-300 group">
               <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                うまくいった点
+                <div className="relative">
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-success animate-bounce-slow" />
+                  <div className="absolute inset-0 bg-success/50 blur-xl" />
+                </div>
+                <span className="gradient-text">うまくいった点</span>
               </label>
               <textarea
                 value={reflection.well}
                 onChange={(e) => setReflection({ ...reflection, well: e.target.value })}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 glass border border-white/20 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-success focus:border-success min-h-[80px] sm:min-h-[100px] text-sm sm:text-base transition-all duration-300"
                 placeholder="実践できた習慣や、良かった変化を書きましょう"
               />
             </div>
 
             {/* 難しかった点 */}
-            <div className="bg-card border rounded-lg p-4 sm:p-6">
+            <div className="glass rounded-2xl border-2 border-warning/30 p-4 sm:p-6 hover:border-warning/50 transition-all duration-300 group">
               <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
-                <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
-                難しかった点
+                <div className="relative">
+                  <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-warning animate-pulse" />
+                  <div className="absolute inset-0 bg-warning/50 blur-xl" />
+                </div>
+                <span className="gradient-text">難しかった点</span>
               </label>
               <textarea
                 value={reflection.challenge}
                 onChange={(e) => setReflection({ ...reflection, challenge: e.target.value })}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 glass border border-white/20 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning min-h-[80px] sm:min-h-[100px] text-sm sm:text-base transition-all duration-300"
                 placeholder="実践が難しかった習慣や、障害となったことを書きましょう"
               />
             </div>
 
             {/* 次に試したいこと */}
-            <div className="bg-card border rounded-lg p-4 sm:p-6">
+            <div className="glass rounded-2xl border-2 border-info/30 p-4 sm:p-6 hover:border-info/50 transition-all duration-300 group">
               <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
-                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
-                次に試したいこと
+                <div className="relative">
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-info animate-float" />
+                  <div className="absolute inset-0 bg-info/50 blur-xl" />
+                </div>
+                <span className="gradient-text">次に試したいこと</span>
               </label>
               <textarea
                 value={reflection.next}
                 onChange={(e) => setReflection({ ...reflection, next: e.target.value })}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 glass border border-white/20 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-info focus:border-info min-h-[80px] sm:min-h-[100px] text-sm sm:text-base transition-all duration-300"
                 placeholder="改善案や新しいアプローチを書きましょう"
               />
             </div>
 
             {/* 自由記述 */}
-            <div className="bg-card border rounded-lg p-4 sm:p-6">
+            <div className="glass rounded-2xl border-2 border-accent/30 p-4 sm:p-6 hover:border-accent/50 transition-all duration-300 group">
               <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
-                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500" />
-                自由記述
+                <div className="relative">
+                  <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5 text-accent animate-pulse-slow" />
+                  <div className="absolute inset-0 bg-accent/50 blur-xl" />
+                </div>
+                <span className="gradient-text">気づき・アイデア</span>
               </label>
               <textarea
                 value={reflection.freeText}
                 onChange={(e) => setReflection({ ...reflection, freeText: e.target.value })}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 glass border border-white/20 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent min-h-[80px] sm:min-h-[100px] text-sm sm:text-base transition-all duration-300"
                 placeholder="その他、気づいたことや感じたことを自由に書きましょう"
               />
             </div>
 
             {/* 次回チェック日 */}
-            <div className="bg-card border rounded-lg p-4 sm:p-6">
+            <div className="glass rounded-2xl border-2 border-primary/30 p-4 sm:p-6 hover:border-primary/50 transition-all duration-300 group">
               <label className="flex items-center gap-2 text-base sm:text-lg font-semibold mb-2 sm:mb-3">
-                <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                次回チェック日
+                <div className="relative">
+                  <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-spin-slow" />
+                  <div className="absolute inset-0 bg-primary/50 blur-xl" />
+                </div>
+                <span className="gradient-text">次回チェック日</span>
               </label>
               <input
                 type="date"
@@ -232,7 +262,7 @@ export const CheckPage: React.FC = () => {
                 onChange={(e) => setNextCheckDate(new Date(e.target.value))}
                 min={formatDateForInput(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000))}
                 max={formatDateForInput(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 glass border border-white/20 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-base transition-all duration-300"
                 required
               />
               <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
@@ -254,7 +284,7 @@ export const CheckPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={saveReflectionMutation.isPending || (!reflection.well && !reflection.challenge && !reflection.next && !reflection.freeText)}
-                className="flex-1 bg-primary text-primary-foreground py-2.5 sm:py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+                className="flex-1 gradient-primary text-white py-3 sm:py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base font-medium btn-glow"
               >
                 {saveReflectionMutation.isPending ? (
                   <>
@@ -265,13 +295,14 @@ export const CheckPage: React.FC = () => {
                   <>
                     <Save className="h-4 w-4" />
                     振り返りを保存
+                    <Sparkles className="h-4 w-4 animate-pulse" />
                   </>
                 )}
               </button>
               <button
                 type="button"
                 onClick={() => navigate(`/projects/${id}`)}
-                className="px-4 sm:px-6 py-2.5 sm:py-3 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors text-sm sm:text-base"
+                className="px-6 sm:px-8 py-3 sm:py-4 glass border border-white/20 rounded-full hover:bg-secondary/20 transition-all duration-300 text-sm sm:text-base"
               >
                 キャンセル
               </button>
