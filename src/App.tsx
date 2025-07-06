@@ -30,11 +30,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  console.log('App component rendering');
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Router>
+          <Router basename="/habit-design-lab-">
             <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
