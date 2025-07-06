@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ProjectCard } from '../components/ProjectCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { getUserProjects } from '../services/projects';
 import { Project } from '../types';
 
@@ -26,9 +27,11 @@ export const DashboardPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-        <p className="text-destructive">プロジェクトの読み込みに失敗しました。</p>
-      </div>
+      <ErrorMessage
+        type="error"
+        message="プロジェクトの読み込みに失敗しました"
+        details="ページを再読み込みしてください。問題が続く場合は、管理者にお問い合わせください。"
+      />
     );
   }
 

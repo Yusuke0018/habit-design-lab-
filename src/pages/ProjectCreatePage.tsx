@@ -10,10 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Calendar, Target, Heart, Loader2 } from 'lucide-react';
 import { createProject } from '../services/projects';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 
 export const ProjectCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { error, details, isError, handleError, clearError } = useErrorHandler();
   
   const [formData, setFormData] = useState({
     projectName: '',
@@ -27,6 +30,9 @@ export const ProjectCreatePage: React.FC = () => {
     onSuccess: (projectId) => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       navigate(`/projects/${projectId}`);
+    },
+    onError: (error) => {
+      handleError(error);
     },
   });
 
@@ -135,12 +141,13 @@ export const ProjectCreatePage: React.FC = () => {
         </div>
 
         {/* エラーメッセージ */}
-        {createMutation.isError && (
-          <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
-            <p className="text-sm text-destructive">
-              プロジェクトの作成に失敗しました。もう一度お試しください。
-            </p>
-          </div>
+        {isError && (
+          <ErrorMessage
+            type="error"
+            message={error || 'プロジェクトの作成に失敗しました'}
+            details={details || undefined}
+            onClose={clearError}
+          />
         )}
 
         {/* ボタン */}

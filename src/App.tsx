@@ -17,6 +17,7 @@ import { ProjectCreatePage } from './pages/ProjectCreatePage';
 import { ProjectDetailPage } from './pages/ProjectDetailPage';
 import { CheckPage } from './pages/CheckPage';
 import { HistoryPage } from './pages/HistoryPage';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,10 +31,11 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
-          <Routes>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Router>
+            <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
               path="/"
@@ -50,10 +52,11 @@ function App() {
               <Route path="projects/:id/check" element={<CheckPage />} />
               <Route path="projects/:id/history" element={<HistoryPage />} />
             </Route>
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </QueryClientProvider>
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

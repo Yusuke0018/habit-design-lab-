@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { HabitElementCard } from '../components/HabitElementCard';
 import { FocusMapping } from '../components/FocusMapping';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { getProject, updateProject } from '../services/projects';
 import { 
   getHabitElements, 
@@ -125,18 +127,16 @@ export const ProjectDetailPage: React.FC = () => {
   };
 
   if (projectLoading || elementsLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner message="プロジェクトを読み込んでいます..." />;
   }
 
   if (!project) {
     return (
-      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-        <p className="text-destructive">プロジェクトが見つかりません。</p>
-      </div>
+      <ErrorMessage
+        type="error"
+        message="プロジェクトが見つかりません"
+        details="プロジェクトが削除されたか、アクセス権限がない可能性があります。"
+      />
     );
   }
 

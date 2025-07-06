@@ -25,6 +25,8 @@ import {
 import { getProject } from '../services/projects';
 import { getProjectHistory } from '../services/history';
 import { History } from '../types';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 
 export const HistoryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -65,18 +67,16 @@ export const HistoryPage: React.FC = () => {
   };
 
   if (projectLoading || historiesLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner message="履歴を読み込んでいます..." />;
   }
 
   if (!project) {
     return (
-      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-        <p className="text-destructive">プロジェクトが見つかりません。</p>
-      </div>
+      <ErrorMessage
+        type="error"
+        message="プロジェクトが見つかりません"
+        details="プロジェクトが削除されたか、アクセス権限がない可能性があります。"
+      />
     );
   }
 

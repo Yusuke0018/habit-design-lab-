@@ -5,14 +5,18 @@
  * 関連クラス: AuthContext, auth.ts
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Calendar, Sparkles, Target, CheckCircle } from 'lucide-react';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 
 export const LoginPage: React.FC = () => {
   const { user, signIn } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const { error, details, isError, handleError, clearError } = useErrorHandler();
 
   useEffect(() => {
     if (user) {
@@ -22,9 +26,13 @@ export const LoginPage: React.FC = () => {
 
   const handleSignIn = async () => {
     try {
+      setIsLoading(true);
+      clearError();
       await signIn();
     } catch (error) {
-      console.error('Login error:', error);
+      handleError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,10 +93,23 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
+          {/* エラーメッセージ */}
+          {isError && (
+            <div className="mb-4">
+              <ErrorMessage
+                type="error"
+                message={error || 'ログインに失敗しました'}
+                details={details || undefined}
+                onClose={clearError}
+              />
+            </div>
+          )}
+
           {/* ログインボタン */}
           <button
             onClick={handleSignIn}
-            className="w-full flex items-center justify-center space-x-3 bg-white border border-gray-300 rounded-lg px-6 py-3 hover:bg-gray-50 transition-colors"
+            disabled={isLoading}
+            className="w-full flex items-center justify-center space-x-3 bg-white border border-gray-300 rounded-lg px-6 py-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -109,7 +130,7 @@ export const LoginPage: React.FC = () => {
               />
             </svg>
             <span className="text-gray-700 font-medium">
-              Googleアカウントでログイン
+              {isLoading ? 'ログイン中...' : 'Googleアカウントでログイン'}
             </span>
           </button>
 

@@ -19,6 +19,8 @@ import {
   Loader2
 } from 'lucide-react';
 import { getProject, updateProject } from '../services/projects';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { getHabitElements } from '../services/habitElements';
 import { saveReflection, getLatestReflection } from '../services/history';
 import { Reflection } from '../types';
@@ -91,18 +93,16 @@ export const CheckPage: React.FC = () => {
   };
 
   if (projectLoading || elementsLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner message="プロジェクトを読み込んでいます..." />;
   }
 
   if (!project) {
     return (
-      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-        <p className="text-destructive">プロジェクトが見つかりません。</p>
-      </div>
+      <ErrorMessage
+        type="error"
+        message="プロジェクトが見つかりません"
+        details="プロジェクトが削除されたか、アクセス権限がない可能性があります。"
+      />
     );
   }
 
@@ -242,11 +242,11 @@ export const CheckPage: React.FC = () => {
 
             {/* エラーメッセージ */}
             {saveReflectionMutation.isError && (
-              <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
-                <p className="text-sm text-destructive">
-                  振り返りの保存に失敗しました。もう一度お試しください。
-                </p>
-              </div>
+              <ErrorMessage
+                type="error"
+                message="振り返りの保存に失敗しました"
+                details="もう一度お試しください。問題が続く場合は、管理者にお問い合わせください。"
+              />
             )}
 
             {/* ボタン */}
