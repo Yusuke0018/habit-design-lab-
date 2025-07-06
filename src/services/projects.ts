@@ -173,10 +173,11 @@ export const getUserProjects = async (): Promise<Project[]> => {
   try {
     console.log('getUserProjects: ユーザーのプロジェクトを取得中...', user.uid);
     
+    // 一時的にorderByを削除（インデックス作成後に戻す）
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('ownerUid', '==', user.uid),
-      orderBy('createdAt', 'desc')
+      where('ownerUid', '==', user.uid)
+      // orderBy('createdAt', 'desc') // インデックス作成後にコメントを外す
     );
 
     const querySnapshot = await getDocs(q);
