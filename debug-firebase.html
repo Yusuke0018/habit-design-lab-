@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Debug</title>
+</head>
+<body>
+  <h1>Firebase接続テスト</h1>
+  <div id="status">初期化中...</div>
+  <button id="testBtn" disabled>Firestoreテスト書き込み</button>
+  <div id="result"></div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDfy5pArjS3P_SEBE3DcB79oNnsD89Fta8",
+      authDomain: "habit-design-lab.firebaseapp.com",
+      projectId: "habit-design-lab",
+      storageBucket: "habit-design-lab.firebasestorage.app",
+      messagingSenderId: "253582894243",
+      appId: "1:253582894243:web:c3db9f4028bfbd4642cb16"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const statusEl = document.getElementById('status');
+    const testBtn = document.getElementById('testBtn');
+    const resultEl = document.getElementById('result');
+
+    // 匿名認証
+    signInAnonymously(auth)
+      .then((userCredential) => {
+        statusEl.textContent = '認証成功: ' + userCredential.user.uid;
+        testBtn.disabled = false;
+      })
+      .catch((error) => {
+        statusEl.textContent = '認証エラー: ' + error.message;
+        console.error('Auth error:', error);
+      });
+
+    // テスト書き込み
+    testBtn.addEventListener('click', async () => {
+      try {
+        resultEl.textContent = '書き込み中...';
+        
+        const docRef = await addDoc(collection(db, 'test'), {
+          message: 'テストメッセージ',
+          timestamp: serverTimestamp(),
+          userId: auth.currentUser?.uid
+        });
+        
+        resultEl.textContent = '書き込み成功: ' + docRef.id;
+      } catch (error) {
+        resultEl.textContent = '書き込みエラー: ' + error.message;
+        console.error('Firestore error:', error);
+      }
+    });
+  </script>
+</body>
+</html>
