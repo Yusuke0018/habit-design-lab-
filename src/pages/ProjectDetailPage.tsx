@@ -2,7 +2,7 @@
  * @file プロジェクト詳細ページ
  * @description プロジェクトの詳細とデザイン画面（Designフェーズ）
  * 設計ドキュメント: 習慣デザイン・ラボ仕様書 - 2.4 プロジェクト詳細
- * 関連クラス: HabitElementCard, MAPSetForm, FocusMapping
+ * 関連クラス: HabitElementCard, MAPSetForm
  */
 
 import React, { useState } from 'react';
@@ -10,7 +10,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   Plus, 
-  Map, 
   Target, 
   Heart, 
   ArrowLeft,
@@ -22,7 +21,6 @@ import {
   X
 } from 'lucide-react';
 import { HabitElementCard } from '../components/HabitElementCard';
-import { FocusMapping } from '../components/FocusMapping';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getProject, updateProject, deleteProject } from '../services/projects';
@@ -43,7 +41,6 @@ export const ProjectDetailPage: React.FC = () => {
   const queryClient = useQueryClient();
   const [isAddingElement, setIsAddingElement] = useState(false);
   const [newElementName, setNewElementName] = useState('');
-  const [showMapping, setShowMapping] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editingProjectName, setEditingProjectName] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -185,7 +182,7 @@ export const ProjectDetailPage: React.FC = () => {
   return (
     <div>
       {/* ヘッダー */}
-      <div className="mb-4 sm:mb-6">
+      <div className="mb-4 sm:mb-6 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-xl p-4 sm:p-6 shadow-lg border border-gray-200 dark:border-gray-700">
         <Link
           to="/dashboard"
           className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4"
@@ -224,7 +221,7 @@ export const ProjectDetailPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <h1 className="text-xl sm:text-3xl font-bold text-red-600 dark:text-red-500 drop-shadow-md">{project.projectName}</h1>
+                  <h1 className="text-xl sm:text-3xl font-bold text-red-600 dark:text-red-500">{project.projectName}</h1>
                   <button
                     onClick={handleStartEditingName}
                     className="p-1.5 glass-subtle hover:bg-primary/20 rounded-lg transition-all duration-300"
@@ -242,14 +239,14 @@ export const ProjectDetailPage: React.FC = () => {
                 </>
               )}
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm">{project.aspiration}</span>
+            <div className="space-y-2 mt-3">
+              <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg">
+                <Target className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">{project.aspiration}</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm">{project.feeling}</span>
+              <div className="flex items-center gap-2 bg-pink-50 dark:bg-pink-900/20 p-2 rounded-lg">
+                <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-pink-600 dark:text-pink-400" />
+                <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">{project.feeling}</span>
               </div>
             </div>
           </div>
@@ -273,59 +270,9 @@ export const ProjectDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* タブ切り替え */}
-      <div className="flex gap-2 mb-4 sm:mb-6">
-        <button
-          onClick={() => setShowMapping(false)}
-          className={`px-3 sm:px-4 py-2 rounded-md transition-colors text-xs sm:text-sm ${
-            !showMapping 
-              ? 'bg-primary text-primary-foreground' 
-              : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-          }`}
-        >
-          <span className="hidden sm:inline">習慣要素一覧</span>
-          <span className="sm:hidden">要素一覧</span>
-        </button>
-        <button
-          onClick={() => setShowMapping(true)}
-          className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md transition-colors text-xs sm:text-sm ${
-            showMapping 
-              ? 'bg-primary text-primary-foreground' 
-              : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-          }`}
-        >
-          <Map className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden sm:inline">フォーカス・マッピング</span>
-          <span className="sm:hidden">マッピング</span>
-        </button>
-      </div>
 
       {/* コンテンツエリア */}
-      {showMapping ? (
-        <div className="bg-card p-4 sm:p-8 rounded-lg border">
-          {habitElements && habitElements.length > 0 ? (
-            <FocusMapping
-              habitElements={habitElements}
-              onUpdatePosition={(elementId, impact, feasibility) => {
-                updateElementMutation.mutate({
-                  elementId,
-                  updates: { impact, feasibility }
-                });
-              }}
-            />
-          ) : (
-            <div className="min-h-[500px] flex items-center justify-center">
-              <div className="text-center">
-                <Map className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  習慣要素を追加してから、フォーカス・マッピングを使用してください
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-4">
+      <div className="space-y-4">
           {/* 習慣要素カード一覧 */}
           {habitElements && habitElements.length > 0 ? (
             habitElements.map((element) => (
@@ -402,8 +349,7 @@ export const ProjectDetailPage: React.FC = () => {
               <span>習慣要素を追加</span>
             </button>
           )}
-        </div>
-      )}
+      </div>
 
       {/* 削除確認ダイアログ */}
       {showDeleteConfirm && (
