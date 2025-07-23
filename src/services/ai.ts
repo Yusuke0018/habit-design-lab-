@@ -126,16 +126,24 @@ class AIService {
     const { project, habitElements, checkHistory } = data;
 
     const habitInfo = habitElements.map(element => {
-      const mapSets = element.mapSets.map(set => 
-        `- 動機(M): ${set.M}, 能力(A): ${set.A}, きっかけ(P): ${set.P}`
-      ).join('\n');
+      const design = element.habitDesign || { minimalAction: '', ifThenRules: [], rewards: [] };
+      const ifThenRules = design.ifThenRules?.map(rule => 
+        `  - ${rule.trigger}`
+      ).join('\n') || '未設定';
+      const rewards = design.rewards?.map(reward => 
+        `  - 条件: ${reward.condition} → 報酬: ${reward.celebration}`
+      ).join('\n') || '未設定';
       
       return `
 習慣要素: ${element.elementName}
 インパクト: ${element.impact}/10
 実現可能性: ${element.feasibility}/10
-MAPセット:
-${mapSets}`;
+極小化（最低限すべき習慣）:
+  ${design.minimalAction || '未設定'}
+If-Thenルール（トリガー）:
+${ifThenRules}
+祝福（報酬）:
+${rewards}`;
     }).join('\n\n');
 
     return `

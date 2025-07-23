@@ -25,12 +25,27 @@ export interface Project {
   updatedAt?: Date;
 }
 
-// B=MAPセットの型
-export interface MAPSet {
+// If-Thenルールの型
+export interface IfThenRule {
   id?: string;
-  M: string;  // Motivation
-  A: string;  // Ability
-  P: string;  // Prompt
+  trigger: string;  // どのようなトリガーがあれば行動に移すか
+  createdAt?: Date;
+}
+
+// 祝福（報酬）の型
+export interface Reward {
+  id?: string;
+  condition: string;    // 達成条件（例：1回できたら、1週間連続でできたら）
+  celebration: string;  // どのように自分に報いるか
+  createdAt?: Date;
+}
+
+// 新しい習慣デザイン要素の型
+export interface HabitDesign {
+  id?: string;
+  minimalAction: string;     // 極小化：最低限すべき習慣の内容
+  ifThenRules: IfThenRule[]; // If-Then：複数のトリガー設定
+  rewards: Reward[];         // 祝福：複数の報酬設定
 }
 
 // 習慣要素の型
@@ -39,7 +54,7 @@ export interface HabitElement {
   elementName: string;
   impact: number;       // インパクト（1-10）
   feasibility: number;  // 実行可能性（1-10）
-  mapSets: MAPSet[];
+  habitDesign: HabitDesign;  // 新しい習慣デザイン要素
   positionX?: number;   // フォーカスマップ上のX座標
   positionY?: number;   // フォーカスマップ上のY座標
 }

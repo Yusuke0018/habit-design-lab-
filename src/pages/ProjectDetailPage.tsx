@@ -28,12 +28,9 @@ import {
   getHabitElements, 
   createHabitElement, 
   updateHabitElement, 
-  deleteHabitElement,
-  addMAPSet,
-  updateMAPSet,
-  deleteMAPSet
+  deleteHabitElement
 } from '../services/habitElements';
-import type { HabitElement, MAPSet } from '../types';
+import type { HabitElement } from '../types';
 
 export const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -87,36 +84,6 @@ export const ProjectDetailPage: React.FC = () => {
     },
   });
 
-  // MAPセット追加
-  const addMAPSetMutation = useMutation({
-    mutationFn: ({ elementId, mapSet }: { elementId: string; mapSet: Omit<MAPSet, 'id'> }) =>
-      addMAPSet(id!, elementId, mapSet),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['habitElements', id] });
-    },
-  });
-
-  // MAPセット更新
-  const updateMAPSetMutation = useMutation({
-    mutationFn: ({ elementId, mapSetId, updates }: { 
-      elementId: string; 
-      mapSetId: string; 
-      updates: Partial<MAPSet> 
-    }) => updateMAPSet(id!, elementId, mapSetId, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['habitElements', id] });
-    },
-  });
-
-  // MAPセット削除
-  const deleteMAPSetMutation = useMutation({
-    mutationFn: ({ elementId, mapSetId }: { elementId: string; mapSetId: string }) =>
-      deleteMAPSet(id!, elementId, mapSetId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['habitElements', id] });
-    },
-  });
-
   // プロジェクト名更新
   const updateProjectNameMutation = useMutation({
     mutationFn: (newName: string) => updateProject(id!, { projectName: newName }),
@@ -141,7 +108,11 @@ export const ProjectDetailPage: React.FC = () => {
         elementName: newElementName.trim(),
         impact: 5,
         feasibility: 5,
-        mapSets: [],
+        habitDesign: {
+          minimalAction: '',
+          ifThenRules: [],
+          rewards: []
+        },
       });
     }
   };
@@ -283,22 +254,6 @@ export const ProjectDetailPage: React.FC = () => {
                   updateElementMutation.mutate({ elementId: element.id!, updates })
                 }
                 onDelete={() => deleteElementMutation.mutate(element.id!)}
-                onAddMAPSet={(mapSet) => 
-                  addMAPSetMutation.mutate({ elementId: element.id!, mapSet })
-                }
-                onUpdateMAPSet={(mapSetId, updates) =>
-                  updateMAPSetMutation.mutate({ 
-                    elementId: element.id!, 
-                    mapSetId, 
-                    updates 
-                  })
-                }
-                onDeleteMAPSet={(mapSetId) =>
-                  deleteMAPSetMutation.mutate({ 
-                    elementId: element.id!, 
-                    mapSetId 
-                  })
-                }
               />
             ))
           ) : (

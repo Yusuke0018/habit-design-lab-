@@ -195,7 +195,7 @@ export const CheckPage: React.FC = () => {
                   >
                     <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{element.elementName}</p>
                     <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1">
-                      {element.mapSets.length}個のB=MAPセット
+                      極小化・If-Then・祝福を設定済み
                     </p>
                   </div>
                 ))}

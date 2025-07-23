@@ -203,13 +203,23 @@ export const HistoryPage: React.FC = () => {
                       {history.designSnapshot.habitElements.map((element, index) => (
                         <div key={index} className="p-3 bg-muted/30 rounded-md">
                           <p className="font-medium text-sm">{element.elementName}</p>
-                          {element.mapSets.length > 0 && (
-                            <div className="mt-2 space-y-1">
-                              {element.mapSets.map((mapSet, mapIndex) => (
-                                <div key={mapIndex} className="text-xs text-muted-foreground pl-4">
-                                  <span className="font-medium">M:</span> {mapSet.M}
+                          {element.habitDesign && (
+                            <div className="mt-2 space-y-1 text-xs text-muted-foreground pl-4">
+                              {element.habitDesign.minimalAction && (
+                                <div>
+                                  <span className="font-medium">極小化:</span> {element.habitDesign.minimalAction}
                                 </div>
-                              ))}
+                              )}
+                              {element.habitDesign.ifThenRules?.length > 0 && (
+                                <div>
+                                  <span className="font-medium">If-Then:</span> {element.habitDesign.ifThenRules.length}個のトリガー
+                                </div>
+                              )}
+                              {element.habitDesign.rewards?.length > 0 && (
+                                <div>
+                                  <span className="font-medium">祝福:</span> {element.habitDesign.rewards.length}個の報酬
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
