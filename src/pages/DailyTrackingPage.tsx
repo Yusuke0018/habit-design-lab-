@@ -92,14 +92,20 @@ const DailyTrackingPage: React.FC = () => {
     if (!user || !projectId) return;
 
     try {
-      await upsertHabitRecord({
+      const recordData: any = {
         habitElementId,
         projectId,
         userId: user.uid,
         date: dateString,
-        status,
-        passReason: status === 'passed' ? passReason : undefined
-      });
+        status
+      };
+      
+      // passReasonは'passed'ステータスの時のみ追加
+      if (status === 'passed' && passReason) {
+        recordData.passReason = passReason;
+      }
+      
+      await upsertHabitRecord(recordData);
 
       // 記録を再読み込み
       await loadData();
@@ -113,15 +119,26 @@ const DailyTrackingPage: React.FC = () => {
     if (!user || !projectId) return;
 
     try {
-      await upsertHabitRecord({
+      const existingRecord = habitRecords.find(r => r.habitElementId === habitElementId);
+      const recordData: any = {
         habitElementId,
         projectId,
         userId: user.uid,
         date: dateString,
-        status: habitRecords.find(r => r.habitElementId === habitElementId)?.status || 'not_done',
-        note
-      });
-
+        status: existingRecord?.status || 'not_done'
+      };
+      
+      // メモを追加
+      if (note) {
+        recordData.note = note;
+      }
+      
+      // 既存のpassReasonがある場合は保持
+      if (existingRecord?.passReason) {
+        recordData.passReason = existingRecord.passReason;
+      }
+      
+      await upsertHabitRecord(recordData);
       await loadData();
     } catch (err) {
       console.error('Error adding note:', err);
