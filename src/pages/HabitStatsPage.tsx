@@ -103,17 +103,30 @@ const HabitStatsPage: React.FC = () => {
 
   const getStreakTrend = (records: HabitRecord[]): number[] => {
     const trend: number[] = [];
+    const recordMap = new Map<string, HabitRecord>();
+    
+    // レコードを日付でマップ化
+    records.forEach(record => {
+      recordMap.set(record.date, record);
+    });
+    
+    // 過去30日分のデータを生成
+    const today = new Date();
     let currentStreak = 0;
-
-    // 日付順にソート（古い順）
-    const sortedRecords = [...records].sort((a, b) => a.date.localeCompare(b.date));
-
-    for (const record of sortedRecords) {
-      if (record.status === 'completed' || record.status === 'passed') {
+    
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = formatDate(date);
+      
+      const record = recordMap.get(dateStr);
+      
+      if (record && (record.status === 'completed' || record.status === 'passed')) {
         currentStreak++;
       } else {
         currentStreak = 0;
       }
+      
       trend.push(currentStreak);
     }
 
@@ -311,21 +324,43 @@ const HabitStatsPage: React.FC = () => {
             {/* 連続記録グラフ */}
             <div className="glass rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-4">過去30日間の連続記録推移</h3>
-              <div className="h-48 flex items-end space-x-1">
-                {getStreakTrend(selectedHabit.recentRecords).map((streak, index) => (
-                  <div
-                    key={index}
-                    className="flex-1 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t transition-all hover:opacity-80"
-                    style={{ 
-                      height: `${Math.max(5, (streak / Math.max(...getStreakTrend(selectedHabit.recentRecords))) * 100)}%` 
-                    }}
-                    title={`${streak}日連続`}
-                  />
-                ))}
-              </div>
-              <div className="mt-2 text-center text-sm text-gray-600">
-                日付（古い → 新しい）
-              </div>
+              {(() => {
+                const streakData = getStreakTrend(selectedHabit.recentRecords);
+                const maxStreak = Math.max(...streakData, 1); // 最小値を1に設定
+                
+                if (streakData.length === 0) {
+                  return (
+                    <div className="h-48 flex items-center justify-center text-gray-500">
+                      まだ記録がありません
+                    </div>
+                  );
+                }
+                
+                return (
+                  <>
+                    <div className="h-48 flex items-end space-x-1">
+                      {streakData.map((streak, index) => (
+                        <div
+                          key={index}
+                          className="flex-1 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t transition-all hover:opacity-80 relative group"
+                          style={{ 
+                            height: streak === 0 ? '2px' : `${(streak / maxStreak) * 100}%`,
+                            minHeight: '2px'
+                          }}
+                        >
+                          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                            {streak}日
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 flex justify-between text-xs text-gray-600">
+                      <span>30日前</span>
+                      <span>今日</span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
 
             {/* 成長の軌跡 */}
