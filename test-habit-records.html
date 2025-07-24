@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>習慣記録テスト</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <h1>習慣記録機能テスト</h1>
+    <div id="status">初期化中...</div>
+    <button id="loginBtn" style="display:none;">Googleでログイン</button>
+    <div id="userInfo" style="display:none;">
+        <p>ユーザー: <span id="userName"></span></p>
+        <button id="testRecordBtn">記録を作成</button>
+        <button id="getRecordsBtn">記録を取得</button>
+        <button id="logoutBtn">ログアウト</button>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKkQ69J-6kNuCvE_LktMhqsceLfvQq7Rk",
+            authDomain: "habit-design-lab.firebaseapp.com",
+            projectId: "habit-design-lab",
+            storageBucket: "habit-design-lab.firebasestorage.app",
+            messagingSenderId: "163440921843",
+            appId: "1:163440921843:web:c0a88fe0e7e9a8cf80ea48"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const statusDiv = document.getElementById('status');
+        const loginBtn = document.getElementById('loginBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+        const testRecordBtn = document.getElementById('testRecordBtn');
+        const getRecordsBtn = document.getElementById('getRecordsBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const resultsDiv = document.getElementById('results');
+
+        // 認証状態の監視
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                statusDiv.textContent = 'ログイン済み';
+                loginBtn.style.display = 'none';
+                userInfo.style.display = 'block';
+                userName.textContent = user.email;
+            } else {
+                statusDiv.textContent = 'ログインしてください';
+                loginBtn.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        });
+
+        // ログイン
+        loginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(error => {
+                console.error('Login error:', error);
+                resultsDiv.innerHTML = `<p style="color:red;">ログインエラー: ${error.message}</p>`;
+            });
+        });
+
+        // ログアウト
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+
+        // テスト記録を作成
+        testRecordBtn.addEventListener('click', async () => {
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('ログインしてください');
+                    return;
+                }
+
+                const recordId = `${user.uid}_test-habit_2025-01-24`;
+                const record = {
+                    habitElementId: 'test-habit',
+                    projectId: 'test-project',
+                    userId: user.uid,
+                    date: '2025-01-24',
+                    status: 'completed',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection('habitRecords').doc(recordId).set(record);
+                resultsDiv.innerHTML = '<p style="color:green;">記録を作成しました！</p>';
+                console.log('Record created:', recordId);
+            } catch (error) {
+                console.error('Create error:', error);
+                resultsDiv.innerHTML = `<p style="color:red;">作成エラー: ${error.message}</p>`;
+            }
+        });
+
+        // 記録を取得
+        getRecordsBtn.addEventListener('click', async () => {
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('ログインしてください');
+                    return;
+                }
+
+                // クエリを実行
+                const snapshot = await db.collection('habitRecords')
+                    .where('userId', '==', user.uid)
+                    .get();
+
+                if (snapshot.empty) {
+                    resultsDiv.innerHTML = '<p>記録が見つかりません</p>';
+                } else {
+                    let html = '<h3>取得した記録:</h3><ul>';
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        html += `<li>ID: ${doc.id}, Date: ${data.date}, Status: ${data.status}</li>`;
+                    });
+                    html += '</ul>';
+                    resultsDiv.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Get error:', error);
+                resultsDiv.innerHTML = `<p style="color:red;">取得エラー: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

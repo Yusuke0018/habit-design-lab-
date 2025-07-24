@@ -73,7 +73,11 @@ const DailyTrackingPage: React.FC = () => {
       }
       setHabitStats(statsData);
     } catch (err) {
-      console.error('Error loading data:', err);
+      console.error('Error loading data in DailyTrackingPage:', err);
+      if (err instanceof Error) {
+        console.error('Error message:', err.message);
+        console.error('Error stack:', err.stack);
+      }
       setError('データの読み込みに失敗しました');
     } finally {
       setIsLoading(false);

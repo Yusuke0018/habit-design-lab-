@@ -97,10 +97,25 @@ export const upsertHabitRecord = async (
   const recordId = `${record.userId}_${record.habitElementId}_${record.date}`;
   const docRef = doc(db, COLLECTION_NAME, recordId);
 
-  await setDoc(docRef, {
-    ...record,
+  // undefinedのフィールドを除外
+  const cleanRecord: any = {
+    habitElementId: record.habitElementId,
+    projectId: record.projectId,
+    userId: record.userId,
+    date: record.date,
+    status: record.status,
     createdAt: serverTimestamp()
-  }, { merge: true });
+  };
+
+  // オプショナルフィールドは値がある場合のみ追加
+  if (record.passReason !== undefined) {
+    cleanRecord.passReason = record.passReason;
+  }
+  if (record.note !== undefined) {
+    cleanRecord.note = record.note;
+  }
+
+  await setDoc(docRef, cleanRecord, { merge: true });
 };
 
 // 特定の日付の習慣記録を取得
@@ -109,6 +124,8 @@ export const getHabitRecordsByDate = async (
   projectId: string,
   date: string
 ): Promise<HabitRecord[]> => {
+  console.log('getHabitRecordsByDate called with:', { userId, projectId, date });
+  
   const q = query(
     collection(db, COLLECTION_NAME),
     where('userId', '==', userId),
@@ -116,11 +133,18 @@ export const getHabitRecordsByDate = async (
     where('date', '==', date)
   );
 
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  } as HabitRecord));
+  try {
+    const snapshot = await getDocs(q);
+    console.log('Query result:', snapshot.size, 'documents found');
+    
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as HabitRecord));
+  } catch (error) {
+    console.error('Error in getHabitRecordsByDate:', error);
+    throw error;
+  }
 };
 
 // 日付範囲の習慣記録を取得
@@ -151,6 +175,8 @@ export const calculateHabitStats = async (
   userId: string,
   habitElementId: string
 ): Promise<HabitStats> => {
+  console.log('calculateHabitStats called with:', { userId, habitElementId });
+  
   const q = query(
     collection(db, COLLECTION_NAME),
     where('userId', '==', userId),
@@ -158,8 +184,10 @@ export const calculateHabitStats = async (
     orderBy('date', 'desc')
   );
 
-  const snapshot = await getDocs(q);
-  const records = snapshot.docs.map(doc => doc.data() as HabitRecord);
+  try {
+    const snapshot = await getDocs(q);
+    console.log('Stats query result:', snapshot.size, 'documents found');
+    const records = snapshot.docs.map(doc => doc.data() as HabitRecord);
 
   // 統計を計算
   const totalDays = records.length;
@@ -224,6 +252,10 @@ export const calculateHabitStats = async (
     completionRate,
     growthStage
   };
+  } catch (error) {
+    console.error('Error in calculateHabitStats:', error);
+    throw error;
+  }
 };
 
 // 成長ステージを判定
@@ -296,10 +328,26 @@ export const batchUpdateHabitRecords = async (
   records.forEach(record => {
     const recordId = `${record.userId}_${record.habitElementId}_${record.date}`;
     const docRef = doc(db, COLLECTION_NAME, recordId);
-    batch.set(docRef, {
-      ...record,
+    
+    // undefinedのフィールドを除外
+    const cleanRecord: any = {
+      habitElementId: record.habitElementId,
+      projectId: record.projectId,
+      userId: record.userId,
+      date: record.date,
+      status: record.status,
       createdAt: serverTimestamp()
-    }, { merge: true });
+    };
+
+    // オプショナルフィールドは値がある場合のみ追加
+    if (record.passReason !== undefined) {
+      cleanRecord.passReason = record.passReason;
+    }
+    if (record.note !== undefined) {
+      cleanRecord.note = record.note;
+    }
+
+    batch.set(docRef, cleanRecord, { merge: true });
   });
 
   await batch.commit();
