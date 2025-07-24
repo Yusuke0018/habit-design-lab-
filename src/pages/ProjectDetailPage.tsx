@@ -18,7 +18,10 @@ import {
   Edit2,
   Trash2,
   Save,
-  X
+  X,
+  Calendar,
+  BarChart3,
+  CheckSquare
 } from 'lucide-react';
 import { HabitElementCard } from '../components/HabitElementCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -222,7 +225,28 @@ export const ProjectDetailPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to={`/projects/${id}/track`}
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
+            >
+              <CheckSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              今日の記録
+            </Link>
+            <Link
+              to={`/projects/${id}/calendar`}
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+            >
+              <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              カレンダー
+            </Link>
+            <Link
+              to={`/projects/${id}/stats`}
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 text-sm"
+            >
+              <BarChart3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              統計
+            </Link>
             <Link
               to={`/projects/${id}/check`}
               className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm"

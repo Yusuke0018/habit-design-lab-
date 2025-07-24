@@ -16,6 +16,9 @@ import { ProjectCreatePage } from './pages/ProjectCreatePage';
 import { ProjectDetailPage } from './pages/ProjectDetailPage';
 import { CheckPage } from './pages/CheckPage';
 import { HistoryPage } from './pages/HistoryPage';
+import DailyTrackingPage from './pages/DailyTrackingPage';
+import CalendarPage from './pages/CalendarPage';
+import HabitStatsPage from './pages/HabitStatsPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const queryClient = new QueryClient({
@@ -52,6 +55,9 @@ function App() {
               <Route path="projects/:id" element={<ProjectDetailPage />} />
               <Route path="projects/:id/check" element={<CheckPage />} />
               <Route path="projects/:id/history" element={<HistoryPage />} />
+              <Route path="projects/:projectId/track" element={<DailyTrackingPage />} />
+              <Route path="projects/:projectId/calendar" element={<CalendarPage />} />
+              <Route path="projects/:projectId/stats" element={<HabitStatsPage />} />
             </Route>
             </Routes>
           </Router>

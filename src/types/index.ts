@@ -85,3 +85,68 @@ export interface CheckHistory {
   freeText?: string;
   checkedAt: string;
 }
+
+// 習慣記録の型
+export interface HabitRecord {
+  id?: string;
+  habitElementId: string;
+  projectId: string;
+  userId: string;
+  date: string; // YYYY-MM-DD format
+  status: 'completed' | 'passed' | 'not_done';
+  passReason?: PassReason;
+  note?: string;
+  createdAt: Date;
+}
+
+// パス理由の型
+export type PassReason = 'illness' | 'travel' | 'emergency' | 'rest' | 'custom';
+
+// 習慣統計の型
+export interface HabitStats {
+  habitElementId: string;
+  totalDays: number;
+  completedDays: number;
+  passedDays: number;
+  currentStreak: number;
+  longestStreak: number;
+  completionRate: number;
+  growthStage: GrowthStage;
+}
+
+// 成長ステージの型
+export type GrowthStage = 'seed' | 'sprout' | 'sapling' | 'tree' | 'blooming' | 'fruit';
+
+// 成長ステージの詳細
+export interface GrowthStageInfo {
+  stage: GrowthStage;
+  name: string;
+  minDays: number;
+  maxDays: number;
+  emoji: string;
+  color: string;
+  description: string;
+}
+
+// カレンダー表示用の型
+export interface CalendarDay {
+  date: string;
+  habits: {
+    habitElementId: string;
+    status: 'completed' | 'passed' | 'not_done' | 'future';
+    growthStage?: GrowthStage;
+  }[];
+}
+
+// 実績の型
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlockedAt?: Date;
+  condition: {
+    type: 'streak' | 'total_days' | 'all_habits' | 'special';
+    value: number;
+  };
+}

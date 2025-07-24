@@ -47,5 +47,22 @@ service cloud.firestore {
         allow update, delete: if false; // 履歴は編集・削除不可
       }
     }
+    
+    // 習慣記録のルール
+    match /habitRecords/{recordId} {
+      // recordIdの形式: {userId}_{habitElementId}_{date}
+      allow read: if isAuthenticated() && 
+        request.auth.uid == resource.data.userId;
+      
+      allow create: if isAuthenticated() && 
+        request.auth.uid == request.resource.data.userId &&
+        request.resource.data.keys().hasAll(['habitElementId', 'projectId', 'userId', 'date', 'status']);
+      
+      allow update: if isAuthenticated() && 
+        request.auth.uid == resource.data.userId &&
+        request.auth.uid == request.resource.data.userId;
+      
+      allow delete: if false; // 記録は削除不可
+    }
   }
 }
