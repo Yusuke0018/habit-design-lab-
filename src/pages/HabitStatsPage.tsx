@@ -5,10 +5,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, Trophy, Calendar, Target } from 'lucide-react';
-import Layout from '../components/Layout';
-import LoadingSpinner from '../components/LoadingSpinner';
-import ErrorMessage from '../components/ErrorMessage';
+import { ArrowLeft, TrendingUp, Trophy, Target } from 'lucide-react';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import GrowthVisual from '../components/GrowthVisual';
 import { useAuth } from '../contexts/AuthContext';
 import { getProject } from '../services/projects';
@@ -16,11 +15,10 @@ import { getHabitElements } from '../services/habitElements';
 import { 
   getProjectHabitStats, 
   getHabitRecordsByDateRange,
-  getGrowthStageInfo,
   GROWTH_STAGES,
   formatDate
 } from '../services/habitRecords';
-import { Project, HabitElement, HabitStats, HabitRecord } from '../types';
+import type { Project, HabitElement, HabitStats, HabitRecord } from '../types';
 
 interface HabitProgress {
   element: HabitElement;
@@ -77,7 +75,7 @@ const HabitStatsPage: React.FC = () => {
         if (elements[i].id) {
           const records = await getHabitRecordsByDateRange(
             user.uid,
-            elements[i].id,
+            elements[i].id!,
             formatDate(startDate),
             formatDate(endDate)
           );
@@ -143,23 +141,14 @@ const HabitStatsPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <Layout>
-        <LoadingSpinner />
-      </Layout>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return (
-      <Layout>
-        <ErrorMessage message={error} />
-      </Layout>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (
-    <Layout>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ヘッダー */}
         <div className="glass rounded-xl p-6">
@@ -219,7 +208,6 @@ const HabitStatsPage: React.FC = () => {
                     <div className="text-sm text-gray-600">次のステージまで</div>
                     <div className="text-lg font-semibold">
                       {(() => {
-                        const currentStageInfo = getGrowthStageInfo(selectedHabit.stats.growthStage);
                         const nextStageIndex = GROWTH_STAGES.findIndex(s => s.stage === selectedHabit.stats.growthStage) + 1;
                         if (nextStageIndex < GROWTH_STAGES.length) {
                           const nextStage = GROWTH_STAGES[nextStageIndex];
@@ -344,7 +332,7 @@ const HabitStatsPage: React.FC = () => {
             <div className="glass rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-4">成長の軌跡</h3>
               <div className="flex items-center justify-between space-x-2">
-                {GROWTH_STAGES.map((stage, index) => (
+                {GROWTH_STAGES.map((stage) => (
                   <div
                     key={stage.stage}
                     className={`flex-1 text-center ${
@@ -367,7 +355,6 @@ const HabitStatsPage: React.FC = () => {
           </>
         )}
       </div>
-    </Layout>
   );
 };
 

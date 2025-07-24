@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Check, X, Pause, Flame, StickyNote } from 'lucide-react';
-import { HabitElement, HabitRecord, PassReason, GrowthStage } from '../types';
+import type { HabitElement, HabitRecord, PassReason, GrowthStage } from '../types';
 import GrowthVisual from './GrowthVisual';
 import { getToday } from '../services/habitRecords';
 

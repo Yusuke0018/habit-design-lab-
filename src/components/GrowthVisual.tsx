@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { GrowthStage, GrowthStageInfo } from '../types';
+import type { GrowthStage } from '../types';
 import { getGrowthStageInfo } from '../services/habitRecords';
 
 interface GrowthVisualProps {

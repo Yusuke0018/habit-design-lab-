@@ -6,10 +6,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Calendar, ChevronLeft, ChevronRight, Target } from 'lucide-react';
-import Layout from '../components/Layout';
 import HabitRecordCard from '../components/HabitRecordCard';
-import LoadingSpinner from '../components/LoadingSpinner';
-import ErrorMessage from '../components/ErrorMessage';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { useAuth } from '../contexts/AuthContext';
 import { getProject } from '../services/projects';
 import { getHabitElements } from '../services/habitElements';
@@ -20,7 +19,7 @@ import {
   getToday,
   formatDate 
 } from '../services/habitRecords';
-import { Project, HabitElement, HabitRecord, HabitStats, PassReason } from '../types';
+import type { Project, HabitElement, HabitRecord, HabitStats, PassReason } from '../types';
 
 const DailyTrackingPage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -143,23 +142,14 @@ const DailyTrackingPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <Layout>
-        <LoadingSpinner />
-      </Layout>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return (
-      <Layout>
-        <ErrorMessage message={error} />
-      </Layout>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (
-    <Layout>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* ヘッダー */}
         <div className="glass rounded-xl p-6">
@@ -282,7 +272,6 @@ const DailyTrackingPage: React.FC = () => {
           </div>
         )}
       </div>
-    </Layout>
   );
 };
 

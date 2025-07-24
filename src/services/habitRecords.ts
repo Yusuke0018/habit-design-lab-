@@ -7,18 +7,15 @@ import {
   collection, 
   doc, 
   setDoc, 
-  getDoc, 
   getDocs, 
   query, 
   where, 
   orderBy,
-  Timestamp,
   serverTimestamp,
-  updateDoc,
   writeBatch
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { HabitRecord, HabitStats, GrowthStage, GrowthStageInfo } from '../types';
+import type { HabitRecord, HabitStats, GrowthStage, GrowthStageInfo } from '../types';
 
 const COLLECTION_NAME = 'habitRecords';
 
@@ -247,7 +244,7 @@ export const getGrowthStageInfo = (stage: GrowthStage): GrowthStageInfo => {
 // プロジェクト内の全習慣の統計を取得
 export const getProjectHabitStats = async (
   userId: string,
-  projectId: string,
+  _projectId: string,
   habitElementIds: string[]
 ): Promise<HabitStats[]> => {
   const statsPromises = habitElementIds.map(id => calculateHabitStats(userId, id));
